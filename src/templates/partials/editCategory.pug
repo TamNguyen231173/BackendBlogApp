@@ -1,0 +1,56 @@
+// Primary Header Modal
+#primary-update-modal.modal.edit-modal.fade(
+  tabindex="-1",
+  role="dialog",
+  aria-labelledby="primary-header-modalLabel",
+  aria-hidden="true"
+)
+  .modal-dialog.modal-lg.modal-dialog-centered
+    .modal-content
+      // Modal header
+      .modal-header.modal-colored-header.bg-primary
+        h4#primary-header-modalLabel.modal-title Edit Category
+        button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+
+      // Modal body
+      .modal-body
+        form#form-udpate-post
+          // Name input
+          .form-group.mb-3
+            label(for="name") Name
+            input#name-update.form-control(
+              type="text",
+              name="name",
+              value="name"
+            )
+
+          // Image input
+          .form-group.mb-3
+            label(for="image") image
+            input#image-update.form-control(type="text", name="image")
+
+      // Modal footer      
+      .modal-footer
+        button.btn.btn-light(type="button", data-dismiss="modal") Cancle
+        button#button-save-update.btn.btn-primary(type="button") Save
+
+// Script for update category       
+script.
+  $(document).ready(function () {
+    $("#button-save-update").click(function () {
+      let name = $("#name-update").val();
+      let image = $("#image-update").val();
+      let id = $(this).val();
+
+      $.ajax(`/api/categories/${id}`, {
+        data: JSON.stringify({ name, image }),
+        type: "PATCH",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        contentType: "application/json",
+        success: function () {
+          location.reload();
+          $("#primary-update-modal").modal("hide");
+        },
+      });
+    });
+  });

@@ -24,7 +24,7 @@ router.use(deserializeUser, requireUser);
 
 router.route("/generateCategories").post(generateCategoryHandler);
 
-router.route("/:page").get(getCategoriesRender);
+router.route("/getAllCategories").get(getCategoriesRender);
 
 router
   .route("/")
@@ -32,7 +32,7 @@ router
   .get(getCategoriesHandler);
 
 router
-  .route("/:postId")
+  .route("/:categoryId")
   .get(validate(getCategorySchema), getCategoryHandler)
   .patch(validate(updateCategorySchema), updateCategoryHandler)
   .delete(validate(deleteCategorySchema), deleteCategoryHandler);

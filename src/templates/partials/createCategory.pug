@@ -1,0 +1,51 @@
+// Primary Header Modal
+#primary-header-modal.modal.fade(
+  tabindex="-1",
+  role="dialog",
+  aria-labelledby="primary-header-modalLabel",
+  aria-hidden="true"
+)
+  .modal-dialog.modal-lg.modal-dialog-centered
+    .modal-content
+      // Modal header
+      .modal-header.modal-colored-header.bg-primary
+        h4#primary-header-modalLabel.modal-title Create Category
+        button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+
+      // Modal body
+      .modal-body
+        form#form-create-post
+          // Name input
+          .form-group.mb-3
+            label(for="name") Name
+            input#name.form-control(type="text", name="name")
+
+          // Image input
+          .form-group.mb-3
+            label(for="image") image
+            input#image.form-control(type="text", name="image")
+
+      // Modal footer      
+      .modal-footer
+        button.btn.btn-light(type="button", data-dismiss="modal") Close
+        button#button-save.btn.btn-primary(type="button") Add
+
+// Script for add category       
+script.
+  $(document).ready(function () {
+    $("#button-save").click(function () {
+      let name = $("#name").val();
+      let image = $("#image").val();
+
+      $.ajax("/api/categories", {
+        data: JSON.stringify({ name, image }),
+        type: "POST",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        contentType: "application/json",
+        success: function () {
+          location.reload();
+          $("#primary-header-modal").modal("hide");
+        },
+      });
+    });
+  });

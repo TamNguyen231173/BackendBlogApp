@@ -83,22 +83,8 @@ body.loading(
 
                     // Pagination
                     include ../partials/pagination.pug
-
+                // end card-body
+              // end card
+            // end col
+          // end row
           include ../partials/footer.pug
-
-  include ../partials/scriptAccess.pug
-  include ../partials/createPost.pug
-  script.
-    $(document).ready(function () {
-      // Catch event delete post
-      $("[id=btn-delete-post]").click(function () {
-        var id = $(this).attr("value");
-        $.ajax({
-          url: "/api/posts/" + id,
-          type: "DELETE",
-          success: function () {
-            location.reload();
-          },
-        });
-      });
-    });

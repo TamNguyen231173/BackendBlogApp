@@ -9,10 +9,9 @@ head
   )
   meta(content="Coderthemes", name="author")
   include ../partials/linkAccess.pug
-body(
-    class="loading"
-    data-layout="detached"
-    data-layout-config='{"leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true}'
+body.loading(
+  data-layout="detached",
+  data-layout-config=`{ "leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true }`
 )
   include ../partials/topbar.pug
 // Start Content
@@ -35,7 +34,7 @@ body(
                       data-target="#primary-header-modal"
                     )
                       i.mdi.mdi-plus-circle.mr-2
-                      | Create Post
+                      | Add Category
                   .col-sm-8
                     .text-sm-right
                       button.btn.btn-success.mb-2.mr-1(type="button")
@@ -51,44 +50,55 @@ body(
                         th Category
                         th(style="width: 85px") Action
                     tbody
-                      | {{  #each categories  }}
-                      tr
-                        td
-                          | {{ id }}
-                        td
-                          | {{ category }}
-                        td.table-action
-                          a#btn-update-post.action-icon(
-                            href="/api/posts/editPost/{{id}}",
-                            style="cursor: pointer"
-                          )
-                            i.mdi.mdi-square-edit-outline
-                          a#btn-delete-post.action-icon(
-                            value="{{ id }}",
-                            style="cursor: pointer"
-                          )
-                            i.mdi.mdi-delete
-                      |
-                      | {{  /each  }}
-              // end card-body
-            // end card
-          // end col
-        // end row
+                      each category in categories
+                        tr
+                          td #{ category._id }
+                          td #{ category.name }
+                          td.table-action
+                            a#btn-update-category.action-icon(
+                              data-toggle="modal",
+                              data-target="#primary-update-modal",
+                              value=`${category._id}`,
+                              style="cursor: pointer"
+                            )
+                              i.mdi.mdi-square-edit-outline
+                            a#btn-delete-category.action-icon(
+                              value=`${category._id}`,
+                              style="cursor: pointer"
+                            )
+                              i.mdi.mdi-delete
+        // Footer
         include ../partials/footer.pug
-  // End page
-// End Content
+
+include ../partials/createCategory.pug
+include ../partials/editCategory.pug
 include ../partials/rightSidebar.pug
 include ../partials/scriptAccess.pug
 script.
   $(document).ready(function () {
     // Catch event delete post
-    $("[id=btn-delete-post]").click(function () {
+    $("[id=btn-delete-category]").click(function () {
       var id = $(this).attr("value");
       $.ajax({
-        url: "/api/posts/" + id,
+        url: "/api/categories/" + id,
         type: "DELETE",
         success: function () {
           location.reload();
+        },
+      });
+    });
+
+    // Catch event update post
+    $("[id=btn-update-category]").click(function () {
+      var id = $(this).attr("value");
+      $.ajax({
+        url: "/api/categories/" + id,
+        type: "GET",
+        success: function (data) {
+          console.log("data: ", data);
+          $("#button-save-update").attr("value", data.category._id);
+          $("#name-update").val(data.category.name);
+          $("#image-update").val(data.category.image);
         },
       });
     });

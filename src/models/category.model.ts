@@ -7,7 +7,7 @@ import {
   Severity,
 } from "@typegoose/typegoose";
 
-@index({ name: 1 }, { unique: true })
+@index({ name: 1 })
 @pre<Category>("save", function (next) {
   this.id = this._id;
   next();

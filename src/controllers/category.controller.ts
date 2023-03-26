@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { Category } from "../models/category.model";
 import {
   CreateCategoryInput,
+  DeleteCategoryInput,
   GetAllCategoriesInput,
   UpdateCategoryInput,
 } from "../schema/post.schema";
@@ -79,17 +80,15 @@ export const getCategoryHandler = async (
   next: NextFunction
 ) => {
   try {
-    const categories = await findCategoryById(req.params.postId);
+    const category = await findCategoryById(req.params.categoryId);
 
-    if (!categories) {
-      return next(new AppError("Post with that ID not found", 404));
+    if (!category) {
+      return next(new AppError("Category with that ID not found", 404));
     }
 
     res.status(200).json({
       status: "success",
-      data: {
-        categories,
-      },
+      category,
     });
   } catch (err: any) {
     next(err);
@@ -137,7 +136,7 @@ export const getCategoriesHandler = async (
 };
 
 export const deleteCategoryHandler = async (
-  req: Request,
+  req: Request<DeleteCategoryInput>,
   res: Response,
   next: NextFunction
 ) => {

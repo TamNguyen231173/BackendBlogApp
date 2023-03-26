@@ -10,6 +10,7 @@
       span.leftbar-user-name #{ user.name }
   // Sidemenu
   ul.metismenu.side-nav
+    // Menu Post
     li.side-nav-title.side-nav-item Post
     li.side-nav-item
       a.side-nav-link(href="javascript: void(0);")
@@ -19,6 +20,7 @@
       ul.side-nav-second-level.mm-collapse(aria-expanded="false")
         li
           a(href="/api/posts/1") All posts
+    // Menu Category      
     li.side-nav-item
       a.side-nav-link(href="javascript: void(0);")
         i.mdi.mdi-codepen
@@ -27,11 +29,22 @@
       ul.side-nav-second-level.mm-collapse(aria-expanded="false")
         li
           a(href="/api/categories/getAllCategories") All categories
+    // Menu User        
+    li.side-nav-item
+      a.side-nav-link(href="javascript: void(0);")
+        i.mdi.mdi-folder-account-outline
+        span Users
+        span.menu-arrow
+      ul.side-nav-second-level.mm-collapse(aria-expanded="false")
+        li
+          a(href="/api/users/1") All users
+    // Menu Chart    
     li.side-nav-item
       a.side-nav-link(href="/common/chart")
         i.uil-chart
         span Chart
         span.menu-arrow
+    // Menu Form    
     li.side-nav-item
       a.side-nav-link(href="/common/form")
         i.uil-chart
