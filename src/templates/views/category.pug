@@ -1,0 +1,95 @@
+doctype html
+head
+  meta(charset="utf-8")
+  title Posts | Tam Nguyen
+  meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  meta(
+    content="A fully featured admin theme which can be used to build CRM, CMS, etc.",
+    name="description"
+  )
+  meta(content="Coderthemes", name="author")
+  include ../partials/linkAccess.pug
+body(
+    class="loading"
+    data-layout="detached"
+    data-layout-config='{"leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true}'
+)
+  include ../partials/topbar.pug
+// Start Content
+.container-fluid
+  // Begin page
+  .wrapper
+    include ../partials/sidebar.pug
+    .content-page
+      .content
+        include ../partials/pageTitle.pug
+        .row
+          .col-12
+            .card
+              .card-body
+                .row.mb-2
+                  .col-sm-4
+                    button.btn.btn-danger.mb-2(
+                      type="button",
+                      data-toggle="modal",
+                      data-target="#primary-header-modal"
+                    )
+                      i.mdi.mdi-plus-circle.mr-2
+                      | Create Post
+                  .col-sm-8
+                    .text-sm-right
+                      button.btn.btn-success.mb-2.mr-1(type="button")
+                        i.mdi.mdi-settings
+                      button.btn.btn-light.mb-2.mr-1(type="button") Import
+                      button.btn.btn-light.mb-2(type="button") Export
+                  // end col
+                .table-responsive
+                  table#posts-table.table.table-centered.w-100.dt-responsive.nowrap
+                    thead.thead-light
+                      tr
+                        th.all id
+                        th Category
+                        th(style="width: 85px") Action
+                    tbody
+                      | {{  #each categories  }}
+                      tr
+                        td
+                          | {{ id }}
+                        td
+                          | {{ category }}
+                        td.table-action
+                          a#btn-update-post.action-icon(
+                            href="/api/posts/editPost/{{id}}",
+                            style="cursor: pointer"
+                          )
+                            i.mdi.mdi-square-edit-outline
+                          a#btn-delete-post.action-icon(
+                            value="{{ id }}",
+                            style="cursor: pointer"
+                          )
+                            i.mdi.mdi-delete
+                      |
+                      | {{  /each  }}
+              // end card-body
+            // end card
+          // end col
+        // end row
+        include ../partials/footer.pug
+  // End page
+// End Content
+include ../partials/rightSidebar.pug
+include ../partials/scriptAccess.pug
+script.
+  $(document).ready(function () {
+    // Catch event delete post
+    $("[id=btn-delete-post]").click(function () {
+      var id = $(this).attr("value");
+      $.ajax({
+        url: "/api/posts/" + id,
+        type: "DELETE",
+        success: function () {
+          location.reload();
+        },
+      });
+    });
+  });

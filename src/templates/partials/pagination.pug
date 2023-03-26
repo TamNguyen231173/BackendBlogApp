@@ -1,0 +1,21 @@
+nav
+  ul.pagination.pagination-rounded.mb-0
+    li.page-item
+      a.page-link(href="javascript: void(0);", aria-label="Previous")
+        span(aria-hidden="true") &laquo;
+        span.sr-only Previous
+
+    - var n = 0;
+      while (n < pages)
+        if (n + 1 == current)
+          li.page-item.active
+            a.page-link(href="javascript: void(0);") #{ n + 1 }
+        else
+          li.page-item 
+            a.page-link(href=`/api/posts/${n+1}`) #{ n + 1 }
+        - n++;
+
+    li.page-item
+      a.page-link(href="javascript: void(0);", aria-label="Next")
+        span(aria-hidden="true") &raquo;
+        span.sr-only Next

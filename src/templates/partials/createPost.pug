@@ -1,0 +1,95 @@
+// Primary Header Modal
+#primary-header-modal.modal.fade(
+  tabindex="-1",
+  role="dialog",
+  aria-labelledby="primary-header-modalLabel",
+  aria-hidden="true"
+)
+  .modal-dialog.modal-lg.modal-dialog-centered
+    .modal-content
+      // Modal header
+      .modal-header.modal-colored-header.bg-primary
+        h4#primary-header-modalLabel.modal-title Create Post
+        button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+
+      // Modal body
+      .modal-body
+        form#form-create-post
+          // Title input
+          .form-group.mb-3
+            label(for="title") Title
+            input#title.form-control(type="text", name="title")
+
+          // Category input
+          .form-group.mb-3
+            label(for="category") Category
+            select#category.form-control(name="category")
+              each category in categories
+                option(value=`${category._id}`)= category.name
+          // Logo input
+          .form-group.mb-3
+            label(for="logo") Logo
+            input#logo.form-control(type="text", name="logo")
+
+          // Image input
+          .form-group.mb-3
+            label(for="image") Image background
+            input#image.form-control(type="text", name="image")
+
+          // Content input
+          .form-group.mb-3
+            label(for="example-textarea") Content
+            textarea#content.form-control(rows="5", name="content")
+
+          // Author input
+          .form-group.mb-3
+            label(for="author") Author
+            input#author.form-control(
+              type="text",
+              name="author",
+              value=`${user.name}`,
+              disabled
+            )
+
+      // Modal footer      
+      .modal-footer
+        button.btn.btn-light(type="button", data-dismiss="modal") Close
+        button#button-save.btn.btn-primary(type="button") Save changes
+
+// Script for create post        
+script.
+  $(document).ready(function () {
+    $("#button-save").click(function () {
+      let title = $("#title").val();
+      let category = { _id: $("#category").val(), name: $("#category option:selected").text() };
+      let logo = $("#logo").val();
+      let content = $("#content").val();
+      let image = $("#image").val();
+      let user = !{JSON.stringify(user)};
+      let userInfo = {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+      };
+      let data = {
+        title,
+        category,
+        logo,
+        content,
+        image,
+        userInfo,
+      };
+
+      $.ajax("/api/posts", {
+        data: JSON.stringify(data),
+        type: "POST",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        contentType: "application/json",
+        success: function () {
+          location.reload();
+          $("#primary-header-modal").modal("hide");
+        },
+      });
+    });
+  });

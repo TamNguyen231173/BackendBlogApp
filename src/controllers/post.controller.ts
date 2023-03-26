@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   CreatePostInput,
   DeletePostInput,
+  GetAllPostsInput,
   GetPostInput,
   UpdatePostInput,
 } from "../schema/post.schema";
@@ -10,12 +11,64 @@ import {
   findAllPosts,
   findAndUpdatePost,
   findOneAndDelete,
-  findPost,
   findPostById,
 } from "../services/post.service";
-import { findUserById } from "../services/user.service";
+import { findAllUsers, findUserById } from "../services/user.service";
+import { findAllCategories } from "../services/category.service";
 import AppError from "../utils/appError";
+import { faker } from "@faker-js/faker";
 
+// Generate posts using faker
+export const genderatePostsHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await findAllUsers();
+    const Category = await findAllCategories();
+    for (let i = 0; i < 200; i++) {
+      const userFake = faker.helpers.arrayElement(user);
+      const categoryFake = faker.helpers.arrayElement(Category);
+      const post = await createPost({
+        input: {
+          title: faker.lorem.sentence(),
+          content: faker.lorem.paragraph(),
+          logo:
+            faker.image.imageUrl(1920, 1080) +
+            "?random=" +
+            Math.round(Math.random() * 1000),
+          image:
+            faker.image.imageUrl(1920, 1080) +
+            "?random=" +
+            Math.round(Math.random() * 1000),
+          category: {
+            _id: categoryFake._id.toString(),
+            name: categoryFake.name,
+          },
+          userInfo: {
+            _id: userFake._id.toString(),
+            name: userFake.name,
+            email: userFake.email,
+            avatar: userFake.avatar,
+          },
+        },
+        user_id: userFake._id.toString(),
+      });
+    }
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        message: "Posts generated successfully",
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+// Create post handler
 export const createPostHandler = async (
   req: Request<{}, {}, CreatePostInput>,
   res: Response,
@@ -43,6 +96,7 @@ export const createPostHandler = async (
   }
 };
 
+// Get one post handler
 export const getPostHandler = async (
   req: Request<GetPostInput>,
   res: Response,
@@ -66,32 +120,44 @@ export const getPostHandler = async (
   }
 };
 
+// Get many posts to render in view
 export const getPostsRender = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const posts = await findAllPosts();
+    let perpage = 10;
+    let page = parseInt(req.params.page);
+    if (isNaN(page)) {
+      page = 1;
+    }
+    const posts = await findAllPosts(page);
     const user = await findUserById(res.locals.user._id);
+    const categories = await findAllCategories();
 
     res.render("post", {
       title: "Posts",
-      posts,
+      posts: posts.posts,
+      current: page,
+      pages: Math.ceil(posts.count / perpage),
       user,
+      categories,
     });
   } catch (err: any) {
     next(err);
   }
 };
 
+// Get many posts handler return json
 export const getPostsHandler = async (
-  req: Request,
+  req: Request<GetAllPostsInput>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const posts = await findAllPosts();
+    let page = req.params.page;
+    const posts = await findAllPosts(page);
     const user = await findUserById(res.locals.user._id);
 
     res.status(200).json({
@@ -107,6 +173,7 @@ export const getPostsHandler = async (
   }
 };
 
+// Get post edit handler
 export const getPostEditHandler = async (
   req: Request,
   res: Response,
@@ -115,6 +182,7 @@ export const getPostEditHandler = async (
   try {
     const post = await findPostById(req.params.postId);
     const user = await findUserById(res.locals.user._id);
+    const categories = await findAllCategories();
 
     if (!post) {
       return next(new AppError("Post with that ID not found", 404));
@@ -124,12 +192,14 @@ export const getPostEditHandler = async (
       title: "Edit Post",
       post,
       user,
+      categories,
     });
   } catch (err: any) {
     next(err);
   }
 };
 
+// Update post handler
 export const updatePostHandler = async (
   req: Request<UpdatePostInput["params"], {}, UpdatePostInput["body"]>,
   res: Response,
@@ -157,6 +227,7 @@ export const updatePostHandler = async (
   }
 };
 
+// Delete post handler
 export const deletePostHandler = async (
   req: Request<DeletePostInput>,
   res: Response,
@@ -177,6 +248,7 @@ export const deletePostHandler = async (
   }
 };
 
+// Parse post form data
 export const parsePostFormData = (
   req: Request,
   res: Response,

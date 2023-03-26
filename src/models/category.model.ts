@@ -7,11 +7,11 @@ import {
   Severity,
 } from "@typegoose/typegoose";
 
+@index({ name: 1 }, { unique: true })
 @pre<Category>("save", function (next) {
   this.id = this._id;
   next();
 })
-@index({ category: 1 })
 @modelOptions({
   options: {
     allowMixed: Severity.ALLOW,
@@ -21,8 +21,11 @@ export class Category {
   @prop()
   id: string;
 
+  @prop({ required: true })
+  image: string;
+
   @prop({ unique: true, required: true })
-  category: string;
+  name: string;
 }
 
 const categoryModel = getModelForClass(Category);

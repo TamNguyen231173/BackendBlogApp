@@ -1,0 +1,101 @@
+doctype html
+head
+  meta(charset="utf-8")
+  title Posts | Tam Nguyen
+  meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  meta(
+    content="A fully featured admin theme which can be used to build CRM, CMS, etc.",
+    name="description"
+  )
+  meta(content="Coderthemes", name="author")
+  |
+  | {{ &gt;linkAccess }}
+| {{ &gt;topbar }}
+// Start Content
+.container-fluid
+  // Begin page
+  .wrapper
+    | {{ &gt;sidebar }}
+    .content-page
+      .content
+        | {{ &gt;pageTitle }}
+        .col-xl-12
+          .card
+            .card-body
+              form.needs-validation(novalidate="")
+                .form-group.position-relative.mb-3
+                  label(for="validationTooltip01") First name
+                  input#validationTooltip01.form-control(
+                    type="text",
+                    placeholder="First name",
+                    value="Mark",
+                    required=""
+                  )
+                  .valid-tooltip
+                    | Looks good!
+                  .invalid-tooltip
+                    | Please enter first name.
+                .form-group.position-relative.mb-3
+                  label(for="validationTooltip02") Last name
+                  input#validationTooltip02.form-control(
+                    type="text",
+                    placeholder="Last name",
+                    value="Otto",
+                    required=""
+                  )
+                  .valid-tooltip
+                    | Looks good!
+                  .invalid-tooltip
+                    | Please enter last name.
+                .form-group.position-relative.mb-3
+                  label(for="validationTooltipUsername") Username
+                  .input-group
+                    .input-group-prepend
+                      span#validationTooltipUsernamePrepend.input-group-text @
+                    input#validationTooltipUsername.form-control(
+                      type="text",
+                      placeholder="Username",
+                      aria-describedby="validationTooltipUsernamePrepend",
+                      required=""
+                    )
+                    .invalid-tooltip
+                      | Please choose a unique and valid username.
+                .form-group.position-relative.mb-3
+                  label(for="validationTooltip03") City
+                  input#validationTooltip03.form-control(
+                    type="text",
+                    placeholder="City",
+                    required=""
+                  )
+                  .invalid-tooltip
+                    | Please provide a valid city.
+                .form-group.position-relative.mb-3
+                  label(for="validationTooltip04") State
+                  input#validationTooltip04.form-control(
+                    type="text",
+                    placeholder="State",
+                    required=""
+                  )
+                  .invalid-tooltip
+                    | Please provide a valid state.
+                .form-group.position-relative.mb-3
+                  label(for="validationTooltip05") Zip
+                  input#validationTooltip05.form-control(
+                    type="text",
+                    placeholder="Zip",
+                    required=""
+                  )
+                  .invalid-tooltip
+                    | Please provide a valid zip.
+                button.btn.btn-primary(type="submit") Submit form
+            // end card-body
+          // end card
+        |
+        | {{ &gt;footer }}
+  // End page
+// End Content
+| {{ &gt;createPost }}
+// bundle
+script(src="/assets/js/vendor.min.js")
+script(src="/assets/js/app.min.js")
+script(src="/assets/js/pages/demo.summernote.js")

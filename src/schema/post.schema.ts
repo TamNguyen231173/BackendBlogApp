@@ -1,4 +1,4 @@
-import { object, string, TypeOf } from "zod";
+import { number, object, string, TypeOf } from "zod";
 
 export const createPostSchema = object({
   body: object({
@@ -26,6 +26,12 @@ const paramsCategory = {
   }),
 };
 
+export const getAllPostsSchema = object({
+  params: object({
+    page: number(),
+  }),
+});
+
 export const getPostSchema = object({
   ...params,
 });
@@ -45,7 +51,7 @@ export const deletePostSchema = object({
 
 export const createCategorySchema = object({
   body: object({
-    category: string({
+    name: string({
       required_error: "Category name is required",
     }),
   }),
@@ -55,10 +61,16 @@ export const getCategorySchema = object({
   ...paramsCategory,
 });
 
+export const getAllCategoriesSchema = object({
+  params: object({
+    page: number(),
+  }),
+});
+
 export const updateCategorySchema = object({
   ...paramsCategory,
   body: object({
-    category: string(),
+    name: string(),
   }).partial(),
 });
 
@@ -74,3 +86,7 @@ export type CreateCategoryInput = TypeOf<typeof createCategorySchema>["body"];
 export type GetCategoryInput = TypeOf<typeof getCategorySchema>["params"];
 export type UpdateCategoryInput = TypeOf<typeof updateCategorySchema>;
 export type DeleteCategoryInput = TypeOf<typeof deleteCategorySchema>["params"];
+export type GetAllPostsInput = TypeOf<typeof getAllPostsSchema>["params"];
+export type GetAllCategoriesInput = TypeOf<
+  typeof getAllCategoriesSchema
+>["params"];

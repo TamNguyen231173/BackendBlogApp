@@ -1,0 +1,201 @@
+.row
+  .col-lg-12
+    .col-lg-12
+      .d-flex.mb-3.justify-content-end
+        button.btn.btn-success.nav-link.right-bar-toggle
+          | Publish now
+          i.mdi.mdi-arrow-right.ml-1
+    form
+      // ==== Image ====
+      .col-lg-12
+        .card.ribbon-box
+          .card-body
+            .ribbon.ribbon-secondary.float-left
+              i.mdi.mdi-access-point.mr-1
+              |
+              | Image
+            h5.text-secondary.float-right.mt-0
+              | The best image on the
+              | world
+            .ribbon-content
+              .form-group.mb-0
+                input#image-input-link.form-control(
+                  type="text",
+                  style="border: none; border-bottom: 1px solid #e3e6f0; border-radius: 0; box-shadow: none; font-size: 1.1rem; font-weight: 500; letter-spacing: 0.5px; line-height: 1.5; padding: 0.5rem 0",
+                  value=`${ post.image }`,
+                  placeholder="Enter link image"
+                )
+              #myAwesomeDropzone.dropzone.d-block.mt-2(
+                data-plugin="dropzone",
+                data-previews-container="#file-previews",
+                data-upload-preview-template="#uploadPreviewTemplate"
+              )
+                .dz-message.needsclick
+                  i.h1.text-muted.dripicons-cloud-upload
+                  h3 Drop files here or click to upload.
+                  span.text-muted.font-13
+                    | (This is just a demo
+                    | dropzone. Selected files are
+                    strong not
+                    |
+                    | actually uploaded.)
+
+      // ==== Logo ====
+      .col-lg-12
+        .card.ribbon-box
+          .card-body
+            .ribbon.ribbon-secondary.float-left
+              i.mdi.mdi-access-point.mr-1
+              |
+              | Logo
+            h5.text-secondary.float-right.mt-0
+              | The greates logo on the world
+            .ribbon-content
+              .form-group.mb-0
+                input#image-input-link-logo.form-control(
+                  type="text",
+                  style="border: none; border-bottom: 1px solid #e3e6f0; border-radius: 0; box-shadow: none; font-size: 1.1rem; font-weight: 500; letter-spacing: 0.5px; line-height: 1.5; padding: 0.5rem 0",
+                  value=`${ post.logo }`,
+                  placeholder="Enter link image"
+                )
+                #logo-image.mt-3
+      |
+
+      // ==== Title ====
+      .col-lg-12
+        .card.ribbon-box
+          .card-body
+            .ribbon.ribbon-primary.float-left
+              i.mdi.mdi-access-point.mr-1
+              |
+              | Title
+            h5.text-primary.float-right.mt-0 Write your best title here
+            .ribbon-content
+              // Title input
+              .form-group.mb-0
+                input#title-input.form-control(
+                  type="text",
+                  style="\
+                                                                                                                                                                                                                        border: none; \
+                                                                                                                                                                                                                        border-bottom: 1px solid #e3e6f0; \
+                                                                                                                                                                                                                        border-radius: 0; \
+                                                                                                                                                                                                                        box-shadow: none; \
+                                                                                                                                                                                                                        font-size: 1.5rem; \
+                                                                                                                                                                                                                        font-weight: 700; \
+                                                                                                                                                                                                                        letter-spacing: 1px; \
+                                                                                                                                                                                                                        line-height: 1.5; \
+                                                                                                                                                                                                                        padding: 0.5rem 0; \
+                                                                                                                                                                                                                        text-transform: uppercase;",
+                  placeholder="Enter title",
+                  value=`${ post.title }`
+                )
+      |
+      // ==== Content ====
+      .col-lg-12
+        .card.ribbon-box
+          .card-body
+            .ribbon.ribbon-info.float-right
+              i.mdi.mdi-access-point.mr-1
+              |
+              | Content
+            h5.text-info.float-left.mt-0
+              | Write your greatest content
+              | here
+            .ribbon-content
+              // Content input
+              #summernote-basic #{ post.content }
+    |
+    // ==== Rightbar ====
+    .right-bar
+      .rightbar-title
+        a.right-bar-toggle.float-right(href="javascript:void(0);")
+          i.dripicons-cross.noti-icon
+        h5.m-0 Settings
+      .rightbar-content.h-100(data-simplebar="init")
+        .simplebar-wrapper(style="margin: 0px")
+          .simplebar-height-auto-observer-wrapper
+            .simplebar-height-auto-observer
+          .simplebar-mask
+            .simplebar-offset(style="right: 0px; bottom: 0px")
+              .simplebar-content-wrapper(
+                style="height: 100%; overflow: hidden"
+              )
+                .simplebar-content(style="padding: 0px")
+                  .p-3
+                    .alert.alert-warning(role="alert")
+                      strong Steve Jobs
+                      |
+                      | Everybody should learn to program a computer because it teaches you how to think.
+                    // Category
+                    h5.mt-3 Category
+                    hr.mt-1
+                    .form-group.mb-3
+                      select#category-select.form-control
+                        each category in categories
+                          if category._id == post.category._id
+                            option(value=`${ category._id }`, selected)= category.name
+                          else
+                            option(value=`${ category._id }`)= category.name
+                    // Author
+                    h5.mt-4 Author
+                    hr.mt-1
+                    .form-group.mb-3
+                      input#author-input.form-control(
+                        type="text",
+                        disabled,
+                        value=`${ post.userInfo.name }`
+                      )
+                    button#resetBtn.submit-update-post.btn.btn-primary.btn-block.mt-4
+                      i.mdi.mdi-clipboard-text-multiple-outline.mr-1
+                      |
+                      | Save And Publish
+                  // end padding
+          .simplebar-placeholder(style="width: auto; height: 497px")
+        .simplebar-track.simplebar-horizontal(style="visibility: hidden")
+          .simplebar-scrollbar(style="width: 0px; display: none")
+        .simplebar-track.simplebar-vertical(style="visibility: hidden")
+          .simplebar-scrollbar(style="height: 0px; display: none")
+script.
+  $(document).ready(function () {
+    // Image input link first time
+    $(".dropzone").html('<img src="' + $("#image-input-link").val() + '" alt="image" class="img-fluid " />');
+    $("#logo-image").html('<img src="' + $("#image-input-link-logo").val() + '" alt="image" class="img-fluid avatar-xl" />');
+
+    // Image input link change
+    $("#image-input-link").change(function () {
+      $(".dropzone").html('<img src="' + $("#image-input-link").val() + '" alt="image" class="img-fluid " />');
+    });
+
+    $("#image-input-link-logo").change(function () {
+      $("#logo-image").html('<img src="' + $("#image-input-link-logo").val() + '" alt="image" class="img-fluid" />');
+    });
+
+    // Submit update post
+    $(".submit-update-post").click(function (e) {
+      e.preventDefault();
+      let title = $("#title-input").val();
+      let content = $("#summernote-basic").summernote("code");
+      let logo = $("#image-input-link-logo").val();
+      let image = $("#image-input-link").val();
+      let category = { _id: $("#category-select").val(), name: $("#category-select option:selected").text() };
+      const data = {
+        title,
+        content,
+        image,
+        logo,
+        category,
+      };
+
+      $.ajax(`/api/posts/!{post._id}`, {
+        type: "PATCH",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        error: function (err) {
+          console.log(err);
+        },
+        success: function (data) {
+          window.location.href = "/api/posts/getAllPosts";
+        },
+      });
+    });
+  });

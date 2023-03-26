@@ -1,12 +1,8 @@
 import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
 import categoryModel, { Category } from "../models/category.model";
 
-export const createCategory = async ({
-  input,
-}: {
-  input: Partial<Category>;
-}) => {
-  return categoryModel.create({ ...input });
+export const createCategory = async (input: Partial<Category>) => {
+  return await categoryModel.create({ ...input });
 };
 
 export const findCategoryById = async (id: string) => {

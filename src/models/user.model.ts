@@ -34,6 +34,9 @@ export class User {
   @prop({ required: true, minlength: 8, maxLength: 32, select: false })
   password: string;
 
+  @prop({ default: "https://avatarfiles.alphacoders.com/182/182133.jpg" })
+  avatar: string;
+
   @prop({ default: "user" })
   role: string;
 

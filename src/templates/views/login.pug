@@ -1,0 +1,133 @@
+doctype html
+html
+head
+  meta(charset="utf-8")
+  title Log In | News App
+  meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  meta(
+    content="A fully featured admin theme which can be used to build CRM, CMS, etc.",
+    name="description"
+  )
+  meta(content="Coderthemes", name="author")
+  include ../partials/linkAccess.pug
+body(class="authentication-bg.pb-0", data-layout-config="{ `darkMode`:false }")
+  .auth-fluid
+    // Auth fluid left content
+    .auth-fluid-form-box
+      .align-items-center.d-flex.h-100
+        .card-body
+          // Logo
+          .auth-brand.text-center.text-lg-left
+            a.logo-dark(href="index.html")
+              span
+                img(src="assets/images/logo-dark.png", alt="", height="18")
+            a.logo-light(href="index.html")
+              span
+                img(src="assets/images/logo.png", alt="", height="18")
+          // title
+          h4.mt-0 Sign In
+          p.text-muted.mb-4
+            | Enter your email address and password to
+            | access account.
+          // form
+          form#form-login
+            .form-group
+              label(for="emailaddress") Email address
+              input#email.form-control(
+                type="email",
+                name="email",
+                required="",
+                placeholder="Enter your email"
+              )
+            .form-group
+              a.text-muted.float-right(href="pages-recoverpw-2.html")
+                small Forgot your password?
+              label(for="password") Password
+              input#password.form-control(
+                type="password",
+                name="password",
+                required="",
+                placeholder="Enter your password"
+              )
+            .form-group.mb-3
+              .custom-control.custom-checkbox
+                input#checkbox-signin.custom-control-input(type="checkbox")
+                label.custom-control-label(for="checkbox-signin") Remember me
+            .form-group.mb-0.text-center
+              button.btn.btn-primary.btn-block(type="submit")
+                i.mdi.mdi-login
+                |
+                | Log In
+            // social
+            .text-center.mt-4
+              p.text-muted.font-16 Sign in with
+              ul.social-list.list-inline.mt-3
+                li.list-inline-item
+                  a.social-list-item.border-primary.text-primary(
+                    href="javascript: void(0);"
+                  )
+                    i.mdi.mdi-facebook
+                li.list-inline-item
+                  a.social-list-item.border-danger.text-danger(
+                    href="javascript: void(0);"
+                  )
+                    i.mdi.mdi-google
+                li.list-inline-item
+                  a.social-list-item.border-info.text-info(
+                    href="javascript: void(0);"
+                  )
+                    i.mdi.mdi-twitter
+                li.list-inline-item
+                  a.social-list-item.border-secondary.text-secondary(
+                    href="javascript: void(0);"
+                  )
+                    i.mdi.mdi-github-circle
+          // end form
+          // Footer
+          footer.footer.footer-alt
+            p.text-muted
+              | Don&apos;t have an account?
+              a.text-muted.ml-1(href="pages-register-2.html")
+                b
+                  | Sign
+                  | Up
+        // end .card-body
+      // end .align-items-center.d-flex.h-100
+    // end auth-fluid-form-box
+    // Auth fluid right content
+    .auth-fluid-right.text-center
+      .auth-user-testimonial
+        h2.mb-3 Make it work, make it right, make it fast!
+        p.lead
+          i.mdi.mdi-format-quote-open
+          |
+          | First, solve the problem. Then, write the code
+          i.mdi.mdi-format-quote-close
+        p
+          | - John Johnson
+      // end auth-user-testimonial
+    // end Auth fluid right content
+  // end auth-fluid
+  // bundle
+  script(src="assets/js/vendor.min.js")
+  script(src="assets/js/app.min.js")
+  script.
+    let formData = document.getElementById("form-login");
+    formData.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      $.ajax("/api/auth/login", {
+        data: JSON.stringify({ email, password }),
+        type: "POST",
+        processData: false,
+        contentType: "application/json",
+        error: function () {
+          console.log("Error");
+        },
+        success: function (response) {
+          localStorage.setItem("token", response.access_token);
+          window.location.href = "/api/posts/1";
+        },
+      });
+    });

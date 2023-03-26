@@ -8,6 +8,7 @@ import {
   updatePostHandler,
   getPostsRender,
   getPostEditHandler,
+  genderatePostsHandler,
 } from "../controllers/post.controller";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -18,24 +19,21 @@ import {
   getPostSchema,
   updatePostSchema,
 } from "../schema/post.schema";
-import { uploadPostImageDisk } from "../upload/single-upload-disk";
 import {
   resizePostImage,
   uploadPostImage,
 } from "../upload/single-upload-sharp";
-import {
-  resizePostImages,
-  uploadPostImages,
-} from "../upload/multi-upload-sharp";
-import { title } from "process";
 
 const router = express.Router();
 
 router.use(deserializeUser, requireUser);
 
-router.route("/getAllPosts").get(getPostsRender);
-
+// Render UI
+router.route("/:page").get(getPostsRender);
 router.route("/editPost/:postId").get(getPostEditHandler);
+
+// Return JSON
+router.route("/generatePosts").post(genderatePostsHandler);
 
 router
   .route("/")

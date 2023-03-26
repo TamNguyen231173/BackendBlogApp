@@ -1,7 +1,9 @@
+import { faker } from "@faker-js/faker";
 import { NextFunction, Request, Response } from "express";
 import { Category } from "../models/category.model";
 import {
   CreateCategoryInput,
+  GetAllCategoriesInput,
   UpdateCategoryInput,
 } from "../schema/post.schema";
 import {
@@ -14,13 +16,51 @@ import {
 import { findUserById } from "../services/user.service";
 import AppError from "../utils/appError";
 
+export const generateCategoryHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const categories = [
+      "Technology",
+      "Business",
+      "Politics",
+      "Sports",
+      "Entertainment",
+      "Health",
+      "Science",
+      "Lifestyle",
+      "Travel",
+      "Food",
+      "Fashion",
+      "Education",
+    ];
+    for (let i = 0; i < categories.length; i++) {
+      let category = await createCategory({
+        image: faker.image.imageUrl(1920, 1080) + "?random=" + i,
+        name: categories[i],
+      });
+    }
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        message: "Categories generated successfully",
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
 export const addCategoryHandler = async (
   req: Request<{}, {}, CreateCategoryInput>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const category = await createCategory({ input: req.body });
+    const category = await createCategory(req.body);
 
     res.status(200).json({
       status: "success",
@@ -57,11 +97,12 @@ export const getCategoryHandler = async (
 };
 
 export const getCategoriesRender = async (
-  req: Request,
+  req: Request<GetAllCategoriesInput>,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    let page = req.params.page;
     const categories = await findAllCategories();
     const user = await findUserById(res.locals.user._id);
 
@@ -81,6 +122,7 @@ export const getCategoriesHandler = async (
   next: NextFunction
 ) => {
   try {
+    let page = parseInt(req.params.page);
     const categories = await findAllCategories();
 
     res.status(200).json({

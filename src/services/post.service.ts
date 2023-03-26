@@ -15,8 +15,18 @@ export const findPostById = async (id: string) => {
   return postModel.findById(id).lean();
 };
 
-export const findAllPosts = async () => {
-  return postModel.find().lean();
+export const findAllPosts = async (page: number) => {
+  let perpage = 10;
+
+  const posts = await postModel
+    .find()
+    .sort({ _id: -1 })
+    .skip(perpage * page - perpage)
+    .limit(perpage)
+    .lean();
+
+  const count = await postModel.countDocuments();
+  return { posts, count };
 };
 
 export const findPost = async (

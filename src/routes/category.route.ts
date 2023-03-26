@@ -6,6 +6,7 @@ import {
   getCategoriesRender,
   getCategoryHandler,
   updateCategoryHandler,
+  generateCategoryHandler,
 } from "../controllers/category.controller";
 import { validate } from "../middleware/validate";
 import {
@@ -21,7 +22,9 @@ const router = express.Router();
 
 router.use(deserializeUser, requireUser);
 
-router.route("/getAllCategories").get(getCategoriesRender);
+router.route("/generateCategories").post(generateCategoryHandler);
+
+router.route("/:page").get(getCategoriesRender);
 
 router
   .route("/")

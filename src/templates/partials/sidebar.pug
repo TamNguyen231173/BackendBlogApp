@@ -1,0 +1,43 @@
+// Left Sidebar Start
+.left-side-menu.left-side-menu-detached
+  .leftbar-user
+    a(href="javascript: void(0);")
+      img.rounded-circle.shadow-sm(
+        src="/assets/images/users/avatar-1.jpg",
+        alt="user-image",
+        height="42"
+      )
+      span.leftbar-user-name #{ user.name }
+  // Sidemenu
+  ul.metismenu.side-nav
+    li.side-nav-title.side-nav-item Post
+    li.side-nav-item
+      a.side-nav-link(href="javascript: void(0);")
+        i.uil-copy-alt
+        span Posts
+        span.menu-arrow
+      ul.side-nav-second-level.mm-collapse(aria-expanded="false")
+        li
+          a(href="/api/posts/1") All posts
+    li.side-nav-item
+      a.side-nav-link(href="javascript: void(0);")
+        i.mdi.mdi-codepen
+        span Categories
+        span.menu-arrow
+      ul.side-nav-second-level.mm-collapse(aria-expanded="false")
+        li
+          a(href="/api/categories/getAllCategories") All categories
+    li.side-nav-item
+      a.side-nav-link(href="/common/chart")
+        i.uil-chart
+        span Chart
+        span.menu-arrow
+    li.side-nav-item
+      a.side-nav-link(href="/common/form")
+        i.uil-chart
+        span Form
+        span.menu-arrow
+  // End Sidebar
+  .clearfix
+  // Sidebar -left
+// Left Sidebar End

@@ -36,19 +36,27 @@ export class Post {
   content: string;
 
   @prop()
-  category: string;
+  category: { _id: string; name: string };
 
-  @prop({ default: "default.png" })
+  @prop({ default: "https://wallpaperaccess.com/full/397922.jpg" })
   logo: string;
 
-  @prop({ default: "default.png" })
+  @prop({
+    default:
+      "https://res.cloudinary.com/zenbusiness/q_auto/v1/logaster/logaster-2022-07-one-piece-symbol.png",
+  })
   image: string;
 
   @prop()
   images: string[];
 
   @prop({ required: true })
-  author: string;
+  userInfo: {
+    _id: string;
+    name: string;
+    email: string;
+    avatar: string;
+  };
 }
 
 const postModel = getModelForClass(Post);

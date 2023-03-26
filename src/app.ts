@@ -10,8 +10,8 @@ import authRouter from "./routes/auth.route";
 import postRouter from "./routes/post.route";
 import commonRouter from "./routes/common.route";
 import categoryRouter from "./routes/category.route";
-const hbs = require("hbs");
 const path = require("path");
+const pug = require("pug");
 
 const app = express();
 
@@ -19,14 +19,14 @@ const app = express();
 const publicDirectoryPath = path.join(__dirname, "./public/");
 const viewsPath = path.join(__dirname, "./templates/views");
 const partialsPath = path.join(__dirname, "./templates/partials");
+const helpers = path.join(__dirname, "./utils/helpers");
 
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath));
 
 // Setup handlebars engine and views location
-app.set("view engine", "hbs");
+app.set("view engine", "pug");
 app.set("views", viewsPath);
-hbs.registerPartials(partialsPath);
 
 // Middleware
 
