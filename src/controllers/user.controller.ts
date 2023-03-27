@@ -1,6 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import { findAllUsers, createUser } from "../services/user.service";
+import {
+  findAllUsers,
+  createUser,
+  findUserById,
+  findAndUpdateUser,
+  findOneAndDelete,
+} from "../services/user.service";
 import { faker } from "@faker-js/faker";
+import {
+  DeleteUserInput,
+  GetUserInput,
+  UpdateUserInput,
+} from "../schema/user.schema";
+import AppError from "../utils/appError";
 
 export const generateUserHandler = async (
   req: Request,
@@ -53,12 +65,84 @@ export const getAllUsersHandler = async (
   next: NextFunction
 ) => {
   try {
-    const users = await findAllUsers();
+    let perpage = 10;
+    let page = parseInt(req.params.page);
+    let users = await findAllUsers(page);
+
+    res.render("user", {
+      title: "Users",
+      users: users.users,
+      pages: Math.ceil(users.count / perpage),
+      current: page,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getUserHandler = async (
+  req: Request<GetUserInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await findUserById(req.params.userId);
+    if (!user) {
+      return next(new AppError("User not found", 404));
+    }
+
     res.status(200).json({
       status: "success",
-      result: users.length,
+      user,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const updateUserHandler = async (
+  req: Request<UpdateUserInput["params"], {}, UpdateUserInput["body"]>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const updateUser = await findAndUpdateUser(
+      { _id: req.params.userId },
+      req.body,
+      {}
+    );
+
+    if (!updateUser) {
+      return next(new AppError("User not found", 404));
+    }
+
+    res.status(200).json({
+      status: "success",
       data: {
-        users,
+        message: "User updated successfully",
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const deleteUserHandler = async (
+  req: Request<DeleteUserInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await findOneAndDelete({ _id: req.params.userId });
+
+    if (!user) {
+      return next(new AppError("User not found", 404));
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        message: "User deleted successfully",
       },
     });
   } catch (err: any) {

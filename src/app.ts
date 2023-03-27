@@ -67,6 +67,7 @@ app.get("/healthChecker", (req: Request, res: Response, next: NextFunction) => {
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   const err = new Error(`Route ${req.originalUrl} not found`) as any;
   err.statusCode = 404;
+  res.render("404Page");
   next(err);
 });
 

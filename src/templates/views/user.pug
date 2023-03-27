@@ -1,0 +1,112 @@
+doctype html
+head
+  meta(charset="utf-8")
+  title Posts | Tam Nguyen
+  meta(name="viewport", content="width=device-width, initial-scale=1.0")
+  meta(
+    content="A fully featured admin theme which can be used to build CRM, CMS, etc.",
+    name="description"
+  )
+  meta(content="Coderthemes", name="author")
+  include ../partials/linkAccess.pug
+body.loading(
+  data-layout="detached",
+  data-layout-config=`{ "leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true }`
+)
+  include ../partials/topbar.pug
+  // Start Content
+  .container-fluid
+    // Begin page
+    .wrapper
+      include ../partials/sidebar.pug
+      .content-page
+        .content
+          include ../partials/pageTitle.pug
+          .row
+            .col-12
+              .card
+                .card-body
+                  .row.mb-2
+                    .col-sm-4
+                      button.btn.btn-info.mb-2(
+                        type="button",
+                        data-toggle="modal",
+                        data-target="#primary-user-modal"
+                      )
+                        i.mdi.mdi-plus-circle.mr-2
+                        | Add User
+                    .col-sm-8
+                      .text-sm-right
+                        button.btn.btn-success.mb-2.mr-1(type="button")
+                          i.mdi.mdi-settings
+                        button.btn.btn-light.mb-2.mr-1(type="button") Import
+                        button.btn.btn-light.mb-2(type="button") Export
+                    // end col
+
+                  table.table.table-striped.table-centered.mb-0
+                    thead
+                      tr
+                        th User
+                        th Role
+                        th Email
+                        th Action
+                    tbody
+                      each user in users 
+                        tr
+                          td.table-user
+                            img.mr-2.rounded-circle(
+                              src=`${user.avatar}`,
+                              alt="table-user"
+                            )
+                            |
+                            | #{ user.name }
+                          td #{ user.role }
+                          td #{ user.email }
+                          td.table-action
+                            a.action-icon(
+                              data-toggle="modal",
+                              data-target="#edit-user-modal",
+                              value=`${user._id}`
+                            )
+                              i.mdi.mdi-pencil
+                            a#btn-delete-user.action-icon(value=`${user._id}`)
+                              i.mdi.mdi-delete
+
+                  // Pagination
+                  include ../partials/pagination.pug
+
+          include ../partials/footer.pug
+  include ../partials/createUser.pug
+  include ../partials/editUser.pug
+  include ../partials/scriptAccess.pug
+  script.
+    $(document).ready(function () {
+      // Catch event delete user
+      $("[id=btn-delete-user]").click(function () {
+        let id = $(this).attr("value");
+        console.log("id: ", id);
+        $.ajax({
+          url: "/api/users/manager/" + id,
+          type: "DELETE",
+          success: function () {
+            location.reload();
+          },
+        });
+      });
+
+      // Catch event edit user
+      $("[data-target='#edit-user-modal']").click(function () {
+        let id = $(this).attr("value");
+        $.ajax({
+          url: "/api/users/manager/" + id,
+          type: "GET",
+          success: function (data) {
+            $("#name-edit").val(data.user.name);
+            $("#email-edit").val(data.user.email);
+            $("#avatar-edit").val(data.user.avatar);
+            $("#role-edit").val(data.user.role);
+            $("#button-edit-user").val(data.user._id);
+          },
+        });
+      });
+    });

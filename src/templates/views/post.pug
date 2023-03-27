@@ -94,7 +94,7 @@ body.loading(
       $("[id=btn-delete-post]").click(function () {
         var id = $(this).attr("value");
         $.ajax({
-          url: "/api/posts/" + id,
+          url: "/api/posts/manager/" + id,
           type: "DELETE",
           success: function () {
             location.reload();

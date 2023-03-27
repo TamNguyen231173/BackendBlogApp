@@ -201,10 +201,7 @@
           aria-expanded="false"
         )
           span.account-user-avatar
-            img.rounded-circle(
-              src="/assets/images/users/avatar-1.jpg",
-              alt="user-image"
-            )
+            img.rounded-circle(src=`${user.avatar}`, alt="user-image")
           span
             span.account-user-name #{ user.name }
             span.account-position #{ user.role }

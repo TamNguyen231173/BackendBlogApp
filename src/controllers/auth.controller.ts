@@ -27,11 +27,7 @@ export const registerHandler = async (
   next: NextFunction
 ) => {
   try {
-    const user = await createUser({
-      email: req.body.email,
-      name: req.body.name,
-      password: req.body.password,
-    });
+    const user = await createUser(req.body);
 
     res.status(201).json({
       status: "success",

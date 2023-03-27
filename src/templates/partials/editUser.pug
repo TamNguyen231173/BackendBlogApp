@@ -1,0 +1,76 @@
+// Primary Header Modal
+#edit-user-modal.modal.fade(
+  tabindex="-1",
+  role="dialog",
+  aria-labelledby="primary-header-modalLabel",
+  aria-hidden="true"
+)
+  .modal-dialog.modal-lg.modal-dialog-centered
+    .modal-content
+      // Modal header
+      .modal-header.modal-colored-header.bg-primary
+        h4#primary-header-modalLabel.modal-title Edit User
+        button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+
+      // Modal body
+      .modal-body
+        form#form-edit-post
+          // Name input
+          .form-group.mb-3
+            label(for="name") Name
+            input#name-edit.form-control(type="text", name="name", value="")
+
+          // Email input
+          .form-group.mb-3
+            label(for="email") Email
+            input#email-edit.form-control(type="text", name="email", value="")
+
+          // Image input
+          .form-group.mb-3
+            label(for="avatar") Avatar
+            input#avatar-edit.form-control(
+              type="text",
+              name="avatar",
+              value=""
+            )
+
+          // Role input
+          .form-group.mb-3
+            label(for="role") Role
+            select#role-edit.form-control(name="role")
+              option(value="user") User
+              option(value="admin") Admin
+
+      // Modal footer      
+      .modal-footer
+        button.btn.btn-light(type="button", data-dismiss="modal") Close
+        button#button-edit-user.btn.btn-primary(type="button") Add
+
+// Script for add category       
+script.
+  $(document).ready(function () {
+    $("#button-edit-user").click(function () {
+      let name = $("#name-edit").val();
+      let email = $("#email-edit").val();
+      let avatar = $("#avatar-edit").val();
+      let role = $("#role-edit").val();
+      let id = $(this).val();
+      console.log("id: ", id);
+      let data = {
+        name,
+        email,
+        avatar,
+        role,
+      };
+
+      $.ajax(`/api/users/manager/${id}`, {
+        data: JSON.stringify(data),
+        type: "PATCH",
+        contentType: "application/json",
+        success: function () {
+          location.reload();
+          $("#edit-user-modal").modal("hide");
+        },
+      });
+    });
+  });

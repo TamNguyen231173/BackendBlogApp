@@ -47,7 +47,7 @@ router
   .get(getPostsHandler);
 
 router
-  .route("/:postId")
+  .route("/manager/:postId")
   .get(validate(getPostSchema), getPostHandler)
   .patch(
     uploadPostImage,

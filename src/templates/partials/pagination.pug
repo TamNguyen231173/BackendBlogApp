@@ -1,5 +1,5 @@
 nav
-  ul.pagination.pagination-rounded.mb-0
+  ul.pagination.pagination-rounded.mb-0.mt-3
     li.page-item
       a.page-link(href="javascript: void(0);", aria-label="Previous")
         span(aria-hidden="true") &laquo;
@@ -12,7 +12,8 @@ nav
             a.page-link(href="javascript: void(0);") #{ n + 1 }
         else
           li.page-item 
-            a.page-link(href=`/api/posts/${n+1}`) #{ n + 1 }
+            |
+            a.page-link(href=`/api/${title}/${n+1}`) #{ n + 1 }
         - n++;
 
     li.page-item

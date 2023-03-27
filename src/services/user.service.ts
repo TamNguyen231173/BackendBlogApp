@@ -14,13 +14,20 @@ export const createUser = async (input: Partial<User>) => {
 
 // Find User by Id
 export const findUserById = async (id: string) => {
-  const user = await userModel.findById(id).lean();
-  return omit(user, excludedFields);
+  return await userModel.findById(id).lean();
 };
 
 // Find All users
-export const findAllUsers = async () => {
-  return await userModel.find();
+export const findAllUsers = async (page: number) => {
+  let perpage = 10;
+  const count = await userModel.countDocuments();
+  const users = await userModel
+    .find()
+    .skip(perpage * page - perpage)
+    .limit(perpage)
+    .lean();
+
+  return { users, count };
 };
 
 // Find one user by any fields
@@ -45,4 +52,21 @@ export const signToken = async (user: DocumentType<User>) => {
 
   // Return access token
   return { access_token };
+};
+
+// Find and update user
+export const findAndUpdateUser = async (
+  query: FilterQuery<User>,
+  update: Partial<User>,
+  options: QueryOptions
+) => {
+  return userModel.findOneAndUpdate(query, update, options);
+};
+
+// Find one and delete user
+export const findOneAndDelete = async (
+  query: FilterQuery<User>,
+  options: QueryOptions = {}
+) => {
+  return await userModel.findOneAndDelete(query, options);
 };

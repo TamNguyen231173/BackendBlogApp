@@ -1,0 +1,102 @@
+// Primary Header Modal
+#primary-user-modal.modal.fade(
+  tabindex="-1",
+  role="dialog",
+  aria-labelledby="primary-header-modalLabel",
+  aria-hidden="true"
+)
+  .modal-dialog.modal-lg.modal-dialog-centered
+    .modal-content
+      // Modal header
+      .modal-header.modal-colored-header.bg-primary
+        h4#primary-header-modalLabel.modal-title Add User
+        button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+
+      // Modal body
+      .modal-body
+        form#form-create-post
+          // Name input
+          .form-group.mb-3
+            label(for="name") Name
+            input#name-create.form-control(type="text", name="name", value="")
+
+          // Email input
+          .form-group.mb-3
+            label(for="email") Email
+            input#email-create.form-control(
+              type="text",
+              name="email",
+              value=""
+            )
+
+          // Passowrd input
+          .form-group.mb-3
+            label(for="password") Password
+            input#password-create.form-control(
+              type="password",
+              name="password",
+              value=""
+            )
+
+          // Confirm password input
+          .form-group.mb-3
+            label(for="confirm-password") Confirm password
+            input#confirm-password-create.form-control(
+              type="password",
+              name="confirm-password",
+              value=""
+            )
+
+          // Image input
+          .form-group.mb-3
+            label(for="avatar") Avatar
+            input#avatar-create.form-control(
+              type="text",
+              name="avatar",
+              value=""
+            )
+
+          // Role input
+          .form-group.mb-3
+            label(for="role") Role
+            select#role-create.form-control(name="role")
+              option(value="user") User
+              option(value="admin") Admin
+
+      // Modal footer      
+      .modal-footer
+        button.btn.btn-light(type="button", data-dismiss="modal") Close
+        button#button-create-user.btn.btn-primary(type="button") Add
+
+// Script for add category       
+script.
+  $(document).ready(function () {
+    $("#button-create-user").click(function () {
+      let name = $("#name-create").val();
+      let email = $("#email-create").val();
+      let password = $("#password-create").val();
+      let passwordConfirm = $("#confirm-password-create").val();
+      let avatar = $("#avatar-create").val();
+      let role = $("#role-create").val();
+      let data = {
+        name,
+        email,
+        password,
+        passwordConfirm,
+        avatar,
+        role,
+      };
+
+      console.log("data: ", data);
+
+      $.ajax("/api/auth/register", {
+        data: JSON.stringify(data),
+        type: "POST",
+        contentType: "application/json",
+        success: function () {
+          location.reload();
+          $("#primary-user-modal").modal("hide");
+        },
+      });
+    });
+  });

@@ -13,78 +13,32 @@ body.loading(
   data-layout="detached",
   data-layout-config='{ "leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true }'
 )
-  include ../partials/topbar.pug
-  // Start Content
-  .container-fluid
-    // Begin page
-    .wrapper
-      include ../partials/sidebar.pug
-      .content-page
-        .content
-          include ../partials/pageTitle.pug
-          .row
-            .col-12
-              .card
-                .card-body
-                  .row.mb-2
-                    .col-sm-4
-                      button.btn.btn-danger.mb-2(
-                        type="button",
-                        data-toggle="modal",
-                        data-target="#primary-header-modal"
-                      )
-                        i.mdi.mdi-plus-circle.mr-2
-                        | Create Post
-                    .col-sm-8
-                      .text-sm-right
-                        button.btn.btn-success.mb-2.mr-1(type="button")
-                          i.mdi.mdi-settings
-                        button.btn.btn-light.mb-2.mr-1(type="button") Import
-                        button.btn.btn-light.mb-2(type="button") Export
-                    // end col
-                  .table-responsive
-                    table#posts-table.table.table-centered.w-100.dt-responsive.nowrap
-                      thead.thead-light
-                        tr
-                          th.all Id
-                          th Title
-                          th Category
-                          th Author
-                          th(style="width: 85px") Action
-                      tbody
-                        each post in posts
-                          tr
-                            td #{ post._id }
+  .account-pages.mt-5.mb-5
+  .container
+    .row.justify-content-center
+      .col-lg-5
+        .card
+          // Logo
+          .card-header.pt-4.pb-4.text-center.bg-primary
+            a(href='index.html')
+              span
+                img(src='assets/images/logo.png' alt='' height='18')
+          .card-body.p-4
+            .text-center
+              h1.text-error
+                | 4
+                i.mdi.mdi-emoticon-sad
+                | 4
+              h4.text-uppercase.text-danger.mt-3 Page Not Found
+              p.text-muted.mt-3
+                | It&apos;s looking like you may have taken a wrong turn. Don&apos;t worry... it
+                | happens to the best of us. Here&apos;s a
+                | little tip that might help you get back on track.
+              a.btn.btn-info.mt-3(href='/api/posts/1')
+                i.mdi.mdi-reply
+                |  Return Home
 
-                            td #{ post.title }
-                              |
-                              div
-                                p.m-0.d-inline-block.align-middle.font-16
-                                  span.text-warning.mdi.mdi-star
-                                  span.text-warning.mdi.mdi-star
-                                  span.text-warning.mdi.mdi-star
-                                  span.text-warning.mdi.mdi-star
-                                  span.text-warning.mdi.mdi-star
-                            td  #{ post.category.name }
+footer.footer.footer-alt
+  | 2018 - 2020 &copy; Hyper - Coderthemes.com
 
-                            td #{ post.userInfo.name }
-
-                            td.table-action
-                              a#btn-update-post.action-icon(
-                                href=`/api/posts/editPost/${post._id}`,
-                                style="cursor: pointer"
-                              )
-                                i.mdi.mdi-square-edit-outline
-                              a#btn-delete-post.action-icon(
-                                value=`${post._id}`,
-                                style="cursor: pointer"
-                              )
-                                i.mdi.mdi-delete
-
-                    // Pagination
-                    include ../partials/pagination.pug
-                // end card-body
-              // end card
-            // end col
-          // end row
-          include ../partials/footer.pug
+include ../partials/scriptAccess.pug

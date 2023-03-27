@@ -186,7 +186,7 @@ script.
         category,
       };
 
-      $.ajax(`/api/posts/!{post._id}`, {
+      $.ajax(`/api/posts/manager/!{post._id}`, {
         type: "PATCH",
         data: JSON.stringify(data),
         contentType: "application/json",

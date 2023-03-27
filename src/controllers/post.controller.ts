@@ -25,7 +25,7 @@ export const genderatePostsHandler = async (
   next: NextFunction
 ) => {
   try {
-    const user = await findAllUsers();
+    const user = await findAllUsers(1);
     const Category = await findAllCategories();
     for (let i = 0; i < 200; i++) {
       const userFake = faker.helpers.arrayElement(user);
