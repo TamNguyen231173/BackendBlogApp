@@ -19,12 +19,12 @@ export const findUserById = async (id: string) => {
 
 // Find All users
 export const findAllUsers = async (page: number) => {
-  let perpage = 10;
+  let perPage = 10;
   const count = await userModel.countDocuments();
   const users = await userModel
     .find()
-    .skip(perpage * page - perpage)
-    .limit(perpage)
+    .skip(perPage * page - perPage)
+    .limit(perPage)
     .lean();
 
   return { users, count };

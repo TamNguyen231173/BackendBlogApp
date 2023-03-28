@@ -9,10 +9,7 @@ head
   )
   meta(content="Coderthemes", name="author")
   include ../partials/linkAccess.pug
-body.loading(
-  data-layout="detached",
-  data-layout-config=`{ "leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true }`
-)
+body.loading(data-layout="detached")
   include ../partials/topbar.pug
   // Start Content
   .container-fluid
@@ -50,7 +47,7 @@ body.loading(
                         th Role
                         th Email
                         th Action
-                    tbody
+                    tbody#tbody
                       each user in users 
                         tr
                           td.table-user
@@ -97,6 +94,7 @@ body.loading(
       // Catch event edit user
       $("[data-target='#edit-user-modal']").click(function () {
         let id = $(this).attr("value");
+        console.log("id: ", id)
         $.ajax({
           url: "/api/users/manager/" + id,
           type: "GET",

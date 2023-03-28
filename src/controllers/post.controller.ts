@@ -19,7 +19,7 @@ import AppError from "../utils/appError";
 import { faker } from "@faker-js/faker";
 
 // Generate posts using faker
-export const genderatePostsHandler = async (
+export const generatePostsHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -81,9 +81,7 @@ export const createPostHandler = async (
 
     res.status(201).json({
       status: "success",
-      data: {
-        post,
-      },
+      post,
     });
   } catch (err: any) {
     if (err.code === "23505") {
@@ -127,7 +125,7 @@ export const getPostsRender = async (
   next: NextFunction
 ) => {
   try {
-    let perpage = 10;
+    let perPage = 10;
     let page = parseInt(req.params.page);
     if (isNaN(page)) {
       page = 1;
@@ -137,10 +135,10 @@ export const getPostsRender = async (
     const categories = await findAllCategories();
 
     res.render("post", {
-      title: "Posts",
+      title: "posts",
       posts: posts.posts,
       current: page,
-      pages: Math.ceil(posts.count / perpage),
+      pages: Math.ceil(posts.count / perPage),
       user,
       categories,
     });
@@ -156,17 +154,22 @@ export const getPostsHandler = async (
   next: NextFunction
 ) => {
   try {
+    let perPage = 10;
     let page = req.params.page;
     const posts = await findAllPosts(page);
     const user = await findUserById(res.locals.user._id);
 
+    if (!posts) {
+      return next(new AppError("Posts not found", 404));
+    }
+
     res.status(200).json({
       status: "success",
-      data: {
-        title: "Posts",
-        posts,
-        user,
-      },
+      title: "posts",
+      posts: posts.posts,
+      current: page,
+      user,
+      pages: Math.ceil(posts.count / perPage),
     });
   } catch (err: any) {
     next(err);

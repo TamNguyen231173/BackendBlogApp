@@ -8,7 +8,7 @@ import {
   updatePostHandler,
   getPostsRender,
   getPostEditHandler,
-  genderatePostsHandler,
+  generatePostsHandler,
 } from "../controllers/post.controller";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -33,10 +33,10 @@ router.route("/:page").get(getPostsRender);
 router.route("/editPost/:postId").get(getPostEditHandler);
 
 // Return JSON
-router.route("/generatePosts").post(genderatePostsHandler);
+router.route("/generatePosts").post(generatePostsHandler);
 
 router
-  .route("/")
+  .route("/data/:page")
   .post(
     uploadPostImage,
     resizePostImage,

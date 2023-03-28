@@ -55,7 +55,7 @@ script.
       let avatar = $("#avatar-edit").val();
       let role = $("#role-edit").val();
       let id = $(this).val();
-      console.log("id: ", id);
+
       let data = {
         name,
         email,
@@ -68,7 +68,7 @@ script.
         type: "PATCH",
         contentType: "application/json",
         success: function () {
-          location.reload();
+          $("#edit-user-modal").removeClass("show");
           $("#edit-user-modal").modal("hide");
         },
       });

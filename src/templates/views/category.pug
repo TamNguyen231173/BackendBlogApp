@@ -9,10 +9,7 @@ head
   )
   meta(content="Coderthemes", name="author")
   include ../partials/linkAccess.pug
-body.loading(
-  data-layout="detached",
-  data-layout-config=`{ "leftSidebarCondensed":false,"darkMode":false, "showRightSidebarOnStart": true }`
-)
+body.loading(data-layout="detached")
   include ../partials/topbar.pug
 // Start Content
 .container-fluid
@@ -53,7 +50,13 @@ body.loading(
                       each category in categories
                         tr
                           td #{ category._id }
-                          td #{ category.name }
+                          td.table-user
+                            img.mr-2.rounded-circle(
+                              src=`${category.image}`,
+                              alt="table-user"
+                            )
+                            |
+                            | #{ category.name }
                           td.table-action
                             a#btn-update-category.action-icon(
                               data-toggle="modal",

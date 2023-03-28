@@ -1,8 +1,9 @@
 import express from "express";
 import {
-  getAllUsersHandler,
+  getAllUsersRender,
   getMeHandler,
   generateUserHandler,
+  getUsersHandler,
 } from "../controllers/user.controller";
 import {
   deleteUserHandler,
@@ -26,7 +27,8 @@ router.use(deserializeUser, requireUser);
 router.post("/generateUsers", generateUserHandler);
 
 // Admin Get Users route. CRUD users
-router.get("/:page", restrictTo("admin"), getAllUsersHandler);
+router.get("/:page", restrictTo("admin"), getAllUsersRender);
+router.get("/data/:page", restrictTo("admin"), getUsersHandler);
 router
   .route("/manager/:userId")
   .get(restrictTo("admin"), validate(getUserSchema), getUserHandler)

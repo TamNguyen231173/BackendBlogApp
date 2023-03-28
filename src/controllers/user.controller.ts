@@ -59,20 +59,42 @@ export const getMeHandler = (
   }
 };
 
-export const getAllUsersHandler = async (
+export const getAllUsersRender = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    let perpage = 10;
+    let perPage = 10;
     let page = parseInt(req.params.page);
     let users = await findAllUsers(page);
 
     res.render("user", {
-      title: "Users",
+      title: "users",
       users: users.users,
-      pages: Math.ceil(users.count / perpage),
+      pages: Math.ceil(users.count / perPage),
+      current: page,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getUsersHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    let perPage = 10;
+    let page = parseInt(req.params.page);
+    let users = await findAllUsers(page);
+
+    res.status(200).json({
+      status: "success",
+      title: "users",
+      users: users.users,
+      pages: Math.ceil(users.count / perPage),
       current: page,
     });
   } catch (err: any) {

@@ -1,22 +1,210 @@
 nav
   ul.pagination.pagination-rounded.mb-0.mt-3
-    li.page-item
-      a.page-link(href="javascript: void(0);", aria-label="Previous")
-        span(aria-hidden="true") &laquo;
-        span.sr-only Previous
+    - if(current > 1) 
+      li.page-item
+        a.page-link.btn-prev(aria-label="Previous")
+          span(aria-hidden="true") &laquo;
+          span.sr-only Previous
 
-    - var n = 0;
-      while (n < pages)
+    - var n = current - 2 > 0 ? current - 2 : 0;
+      while (n < pages && n <= current + 2)
         if (n + 1 == current)
           li.page-item.active
-            a.page-link(href="javascript: void(0);") #{ n + 1 }
+            a.page-link #{ n + 1 }
         else
           li.page-item 
             |
-            a.page-link(href=`/api/${title}/${n+1}`) #{ n + 1 }
+            |
+            |
+            a.page-link #{ n + 1 }
+
+        if (n + 1 == current + 3 && n + 1 < pages)
+          li.page-item
+            a.page-link ... #{ pages }
         - n++;
 
-    li.page-item
-      a.page-link(href="javascript: void(0);", aria-label="Next")
-        span(aria-hidden="true") &raquo;
-        span.sr-only Next
+      - if(pages > 1 && current < pages)
+        li.page-item
+          a.page-link.btn-next(aria-label="Next")
+            span(aria-hidden="true") &raquo;
+            span.sr-only Next
+
+  script.
+    $(document).ready(function () {
+
+      // Render table post 
+      const renderPosts = function (data) {
+        data.posts.map(
+          (post) =>
+            (document.getElementById("tbody").innerHTML += `
+            <tr>
+              <td>${post._id}</td>
+              <td>${post.title}</td>
+              <td>${post.category.name}</td>
+              <td>${post.userInfo.name}</td>
+              <td class="table-action">
+                  <a
+                    id="btn-update-post"
+                    class="action-icon"
+                    href="/api/posts/editPost/${post._id}"
+                    style="cursor: pointer"
+                  >
+                    <i class="mdi mdi-square-edit-outline"></i>
+                  </a>
+                  <a
+                    id="btn-delete-post"
+                    class="action-icon"
+                    style="cursor: pointer"
+                    value="${post._id}"
+                  >
+                    <i class="mdi mdi-delete"></i>
+                  </a>
+              </td>
+            </tr>
+          `)
+        );
+      }
+
+      // Render table user 
+      const renderUsers = function (data) {
+        data.users.map(
+          (user) =>
+            (document.getElementById("tbody").innerHTML += `
+              <tr>
+                <td class="table-user">
+                  <img
+                    src="${user.avatar}"
+                    alt="table-user"
+                    class="mr-2 rounded-circle"
+                  />
+                  ${user.name}
+                </td>
+                <td>${user.role}</td>
+                <td>${user.email}</td>
+                <td class="table-action">
+                    <a
+                      data-toggle="modal",
+                      data-target="#edit-user-modal",
+                      value="${user._id}"
+                    >
+                      <i class="mdi mdi-pencil"></i>
+                    </a>
+                    <a
+                      id="btn-delete-user"
+                      class="action-icon"
+                      style="cursor: pointer"
+                      value="${user._id}"
+                    >
+                      <i class="mdi mdi-delete"></i>
+                    </a>
+                </td>
+              </tr>
+          `)
+        );
+      }
+
+      // Get data from server
+      let currentPage = !{JSON.stringify(current)};
+      let title = !{JSON.stringify(title)};
+      let pages = !{JSON.stringify(pages)};
+
+      // Render data table
+      const renderTable = function (currentPage) {
+         $.ajax({
+          url: `/api/${title}/data/${currentPage}`,
+          type: "GET",
+          success: function (data) {
+            document.getElementById("tbody").innerHTML = "";
+            if (title == "posts") {
+              renderPosts(data);
+            } else if (title == "users") {
+              renderUsers(data);
+            }
+            // Render pagination after render table
+            renderPagination(currentPage);
+          },
+        });
+      }
+
+      //Render pagination
+      const renderPagination = function (currentPage) {
+          $('.pagination').empty();
+         
+          let pagination = ` `;
+
+          if (currentPage > 1)
+            pagination += `
+                <li class="page-item">
+                  <a class="page-link btn-prev" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+              `;
+          let n = currentPage - 2 > 0 ? currentPage - 2 : 0;
+          while (n < pages && n <= currentPage + 2) {
+            if (n + 1 == currentPage) {
+              pagination += `
+                <li class="page-item active">
+                  <a class="page-link">${n + 1}</a>
+                </li>
+              `;
+            } else {
+              pagination += `
+                <li class="page-item">
+                  <a class="page-link">${n + 1}</a>
+                </li>
+              `;
+            }
+
+            if (n + 1 == currentPage + 3 && n + 1 < pages) {
+              pagination += `
+                <li class="page-item">
+                  <a class="page-link">... ${pages}</a>
+                </li>
+              `;
+            }
+            n++;
+          }
+
+          if (pages > 1 && currentPage < pages)
+            pagination += `
+                  <li class="page-item">
+                    <a class="page-link btn-next" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>`
+
+          $('.pagination').append(pagination);
+      }
+
+      // Pagination click
+      $(".pagination").on("click", ".page-link", function () {
+
+        // Get current page and title
+        if ($(this).hasClass("btn-prev")) {
+          currentPage = currentPage - 1;
+          if (currentPage < 1) {
+            currentPage = 1;
+          }
+        } 
+        else if ($(this).hasClass("btn-next")) {
+          currentPage = currentPage - 1 + 2;
+          if (currentPage > pages) {
+            currentPage = pages;
+          }
+        } 
+        else {
+          if ($(this).text().includes("...")) {
+            currentPage = pages - 1 + 1;
+          } else {
+            currentPage = $(this).text() - 1 + 1;
+          }
+        }
+
+        // Render data table
+        renderTable(currentPage);
+      });
+
+    });
