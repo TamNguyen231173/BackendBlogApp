@@ -62,7 +62,7 @@ body.loading(data-layout="detached")
                                 style="cursor: pointer"
                               )
                                 i.mdi.mdi-square-edit-outline
-                              a#btn-delete-post.action-icon(
+                              a#btn-delete.action-icon(
                                 style="cursor: pointer",
                                 value=`${post._id}`
                               )
@@ -78,109 +78,5 @@ body.loading(data-layout="detached")
 
   script.
     $(document).ready(function () {
-      // Render data table
-      const renderData = function () {
-        let currentPage = !{JSON.stringify(current)};
-        
-        $.ajax({
-          url: `/api/posts/data/${currentPage}`,
-          type: "GET",
-          success: function (data) {
-            document.getElementById("tbody-posts").innerHTML = "";
-            data.posts.map(
-              (post) =>
-                (document.getElementById("tbody-posts").innerHTML += `
-                <tr>
-                  <td>${post._id}</td>
-                  <td>${post.title}</td>
-                  <td>${post.category.name}</td>
-                  <td>${post.userInfo.name}</td>
-                  <td class="table-action">
-                      <a 
-                        id="btn-update-post" 
-                        class="action-icon" 
-                        href="/api/posts/editPost/${post._id}" 
-                        style="cursor: pointer"> 
-                        <i class="mdi mdi-square-edit-outline"></i>
-                      </a>
-                      <a id="btn-delete-post" class="action-icon" value="${post._id}" style="cursor: pointer"> 
-                        <i class="mdi mdi-delete"></i>
-                      </a>
-                  </td>
-                </tr>
-            `)
-            );
-          },
-        });
-      };
-
-       // Delete post
-      const deletePost = function (id) {
-        $.ajax({
-          url: "/api/posts/manager/" + id,
-          type: "DELETE",
-          success: function () {
-            renderData();
-          },
-        });
-      };
-
-      // Reset Form Create Post
-      const resetFormCreate = function () {
-        $("#title").val("");
-        $("#category").val("");
-        $("#logo").val("");
-        $("#content").val("");
-        $("#image").val("");
-      };
-
-      // Add post 
-      const addPost = function (data) {
-        $.ajax("/api/posts/data/1", {
-          data: JSON.stringify(data),
-          type: "POST",
-          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-          contentType: "application/json",
-          success: function (data) {
-            renderData();
-            resetFormCreate();
-          },
-        });
-      }
-
-      // Catch event create post
-      $("#button-save").on("click", function () {
-        // Get data
-        let title = $("#title").val();
-        let category = { _id: $("#category").val(), name: $("#category option:selected").text() };
-        let logo = $("#logo").val();
-        let content = $("#content").val();
-        let image = $("#image").val();
-        let user = !{JSON.stringify(user)};
-        let userInfo = {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          avatar: user.avatar,
-        };
-
-        // Create data
-        let data = {
-          title,
-          category,
-          logo,
-          content,
-          image,
-          userInfo,
-        };
-
-        // Call function add post
-        addPost(data);
-      });
-
-      // Catch event delete post
-      $("#tbody-posts").on("click", "#btn-delete-post", function () {
-        let id = $(this).attr("value");
-        deletePost(id);
-      });
+   
     });

@@ -67,36 +67,8 @@
       .modal-footer
         button.btn.btn-light(type="button", data-dismiss="modal") Close
         button#button-create-user.btn.btn-primary(type="button") Add
-
-// Script for add category       
+      
 script.
   $(document).ready(function () {
-    $("#button-create-user").click(function () {
-      let name = $("#name-create").val();
-      let email = $("#email-create").val();
-      let password = $("#password-create").val();
-      let passwordConfirm = $("#confirm-password-create").val();
-      let avatar = $("#avatar-create").val();
-      let role = $("#role-create").val();
-      let data = {
-        name,
-        email,
-        password,
-        passwordConfirm,
-        avatar,
-        role,
-      };
-
-      console.log("data: ", data);
-
-      $.ajax("/api/auth/register", {
-        data: JSON.stringify(data),
-        type: "POST",
-        contentType: "application/json",
-        success: function () {
-          location.reload();
-          $("#primary-user-modal").modal("hide");
-        },
-      });
-    });
+   
   });

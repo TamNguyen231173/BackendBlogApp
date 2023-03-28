@@ -23,6 +23,7 @@ export const findAllUsers = async (page: number) => {
   const count = await userModel.countDocuments();
   const users = await userModel
     .find()
+    .sort({ createdAt: -1 })
     .skip(perPage * page - perPage)
     .limit(perPage)
     .lean();

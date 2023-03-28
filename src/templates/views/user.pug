@@ -66,7 +66,7 @@ body.loading(data-layout="detached")
                               value=`${user._id}`
                             )
                               i.mdi.mdi-pencil
-                            a#btn-delete-user.action-icon(value=`${user._id}`)
+                            a#btn-delete.action-icon(value=`${user._id}`)
                               i.mdi.mdi-delete
 
                   // Pagination
@@ -78,23 +78,9 @@ body.loading(data-layout="detached")
   include ../partials/scriptAccess.pug
   script.
     $(document).ready(function () {
-      // Catch event delete user
-      $("[id=btn-delete-user]").click(function () {
-        let id = $(this).attr("value");
-        console.log("id: ", id);
-        $.ajax({
-          url: "/api/users/manager/" + id,
-          type: "DELETE",
-          success: function () {
-            location.reload();
-          },
-        });
-      });
-
       // Catch event edit user
-      $("[data-target='#edit-user-modal']").click(function () {
+      $("#tbody").on("click", "[data-target='#edit-user-modal']", function () {
         let id = $(this).attr("value");
-        console.log("id: ", id)
         $.ajax({
           url: "/api/users/manager/" + id,
           type: "GET",

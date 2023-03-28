@@ -75,7 +75,6 @@ body.loading(data-layout="detached")
 
 include ../partials/createCategory.pug
 include ../partials/editCategory.pug
-include ../partials/rightSidebar.pug
 include ../partials/scriptAccess.pug
 script.
   $(document).ready(function () {
@@ -98,7 +97,6 @@ script.
         url: "/api/categories/" + id,
         type: "GET",
         success: function (data) {
-          console.log("data: ", data);
           $("#button-save-update").attr("value", data.category._id);
           $("#name-update").val(data.category.name);
           $("#image-update").val(data.category.image);

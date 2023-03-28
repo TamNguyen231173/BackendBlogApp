@@ -44,33 +44,7 @@
       // Modal footer      
       .modal-footer
         button.btn.btn-light(type="button", data-dismiss="modal") Close
-        button#button-edit-user.btn.btn-primary(type="button") Add
+        button#button-edit-user.btn.btn-primary(type="button") Save
 
-// Script for add category       
 script.
-  $(document).ready(function () {
-    $("#button-edit-user").click(function () {
-      let name = $("#name-edit").val();
-      let email = $("#email-edit").val();
-      let avatar = $("#avatar-edit").val();
-      let role = $("#role-edit").val();
-      let id = $(this).val();
-
-      let data = {
-        name,
-        email,
-        avatar,
-        role,
-      };
-
-      $.ajax(`/api/users/manager/${id}`, {
-        data: JSON.stringify(data),
-        type: "PATCH",
-        contentType: "application/json",
-        success: function () {
-          $("#edit-user-modal").removeClass("show");
-          $("#edit-user-modal").modal("hide");
-        },
-      });
-    });
-  });
+  $(document).ready(function () {});

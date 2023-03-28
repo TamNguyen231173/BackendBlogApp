@@ -16,6 +16,17 @@ nav
             |
             |
             |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
             a.page-link #{ n + 1 }
 
         if (n + 1 == current + 3 && n + 1 < pages)
@@ -52,7 +63,7 @@ nav
                     <i class="mdi mdi-square-edit-outline"></i>
                   </a>
                   <a
-                    id="btn-delete-post"
+                    id="btn-delete"
                     class="action-icon"
                     style="cursor: pointer"
                     value="${post._id}"
@@ -83,6 +94,7 @@ nav
                 <td>${user.email}</td>
                 <td class="table-action">
                     <a
+                      class="action-icon"
                       data-toggle="modal",
                       data-target="#edit-user-modal",
                       value="${user._id}"
@@ -90,7 +102,7 @@ nav
                       <i class="mdi mdi-pencil"></i>
                     </a>
                     <a
-                      id="btn-delete-user"
+                      id="btn-delete"
                       class="action-icon"
                       style="cursor: pointer"
                       value="${user._id}"
@@ -104,9 +116,9 @@ nav
       }
 
       // Get data from server
-      let currentPage = !{JSON.stringify(current)};
-      let title = !{JSON.stringify(title)};
-      let pages = !{JSON.stringify(pages)};
+      var currentPage = !{JSON.stringify(current)};
+      var title = !{JSON.stringify(title)};
+      var pages = !{JSON.stringify(pages)};
 
       // Render data table
       const renderTable = function (currentPage) {
@@ -207,4 +219,142 @@ nav
         renderTable(currentPage);
       });
 
+       // Catch event delete
+      $("#tbody").on("click", "#btn-delete", function () {
+        let id = $(this).attr("value");
+
+        $.ajax({
+          url: `/api/${title}/manager/${id}`,
+          type: "DELETE",
+          success: function () {
+            renderTable(currentPage);
+          },
+        });
+      });
+
+      // ========== Post section ==========
+         // Reset Form Create Post
+      const resetFormCreate = function () {
+        $("#title").val("");
+        $("#category").val("");
+        $("#logo").val("");
+        $("#content").val("");
+        $("#image").val("");
+      };
+
+      // Add post 
+      const addPost = function (data) {
+        $.ajax("/api/posts/data/1", {
+          data: JSON.stringify(data),
+          type: "POST",
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+          contentType: "application/json",
+          success: function () {
+            renderTable(currentPage);
+            resetFormCreate();
+          },
+        });
+      }
+
+      // Catch event create post
+      $("#button-save").on("click", function () {
+        // Get data
+        let title = $("#title").val();
+        let category = { _id: $("#category").val(), name: $("#category option:selected").text() };
+        let logo = $("#logo").val();
+        let content = $("#content").val();
+        let image = $("#image").val();
+        let user = !{JSON.stringify(user)};
+        let userInfo = {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+        };
+
+        // Create data
+        let data = {
+          title,
+          category,
+          logo,
+          content,
+          image,
+          userInfo,
+        };
+
+        // Call function add post
+        addPost(data);
+      });
+
+       // ========== User section ==========
+
+      // Reset Form Create User
+      const resetFormCreateUser = function () {
+        $("#name-create").val("");
+        $("#email-create").val("");
+        $("#password-create").val("");
+        $("#confirm-password-create").val("");
+        $("#avatar-create").val("");
+        $("#role-create").val("");
+      };
+
+      // Create user function
+      const createUser = function (data) {
+        $.ajax("/api/auth/register", {
+          data: JSON.stringify(data),
+          type: "POST",
+          contentType: "application/json",
+          success: function () {
+            renderTable(currentPage);
+            resetFormCreateUser();
+          },
+        });
+      };
+
+      $("#button-create-user").click(function () {
+          let name = $("#name-create").val();
+          let email = $("#email-create").val();
+          let password = $("#password-create").val();
+          let passwordConfirm = $("#confirm-password-create").val();
+          let avatar = $("#avatar-create").val();
+          let role = $("#role-create").val();
+          let data = {
+            name,
+            email,
+            password,
+            passwordConfirm,
+            avatar,
+            role,
+          };
+
+          createUser(data);
+       });
+
+      // Edit user function
+      const editUser = function (id, data) {
+        $.ajax(`/api/users/manager/${id}`, {
+          data: JSON.stringify(data),
+          type: "PATCH",
+          contentType: "application/json",
+          success: function () {
+            renderTable(currentPage);
+          },
+        });
+      };  
+
+      $("#button-edit-user").click(function () {
+        let name = $("#name-edit").val();
+        let email = $("#email-edit").val();
+        let avatar = $("#avatar-edit").val();
+        let role = $("#role-edit").val();
+        let id = $(this).val();
+
+        let data = {
+          name,
+          email,
+          avatar,
+          role,
+        };
+        editUser(id, data);
+      });
     });
