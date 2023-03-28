@@ -121,14 +121,11 @@ export const getCategoriesHandler = async (
   next: NextFunction
 ) => {
   try {
-    let page = parseInt(req.params.page);
     const categories = await findAllCategories();
 
     res.status(200).json({
       status: "success",
-      data: {
-        categories,
-      },
+      categories,
     });
   } catch (err: any) {
     next(err);

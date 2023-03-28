@@ -27,6 +27,16 @@ nav
             |
             |
             |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
             a.page-link #{ n + 1 }
 
         if (n + 1 == current + 3 && n + 1 < pages)
@@ -227,7 +237,23 @@ nav
           url: `/api/${title}/manager/${id}`,
           type: "DELETE",
           success: function () {
+            $.toast({
+                heading: 'Success',
+                text: `Delete ${title} successfully`,
+                showHideTransition: 'slide',
+                icon: 'success',
+                position: 'bottom-right',
+            })
             renderTable(currentPage);
+          },
+          error: function (err) {
+            $.toast({
+                heading: 'Error',
+                text: `Delete ${title} failed`,
+                showHideTransition: 'slide',
+                icon: 'error',
+                position: 'bottom-right',
+            })
           },
         });
       });
@@ -250,8 +276,24 @@ nav
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },
           contentType: "application/json",
           success: function () {
+            $.toast({
+                heading: 'Success',
+                text: 'Add post successfully',
+                showHideTransition: 'slide',
+                icon: 'success',
+                position: 'bottom-right',
+            })
             renderTable(currentPage);
             resetFormCreate();
+          },
+          error: function (err) {
+            $.toast({
+                heading: 'Error',
+                text: 'Add post failed',
+                showHideTransition: 'slide',
+                icon: 'error',
+                position: 'bottom-right',
+            })
           },
         });
       }
@@ -305,8 +347,24 @@ nav
           type: "POST",
           contentType: "application/json",
           success: function () {
+            $.toast({
+                heading: 'Success',
+                text: 'Create user successfully',
+                showHideTransition: 'slide',
+                icon: 'success',
+                position: 'bottom-right',
+            })
             renderTable(currentPage);
             resetFormCreateUser();
+          },
+          error: function (err) {
+            $.toast({
+                heading: 'Error',
+                text: 'Create user failed',
+                showHideTransition: 'slide',
+                icon: 'error',
+                position: 'bottom-right',
+            })
           },
         });
       };
@@ -337,7 +395,23 @@ nav
           type: "PATCH",
           contentType: "application/json",
           success: function () {
+            $.toast({
+                heading: 'Success',
+                text: 'Edit user successfully',
+                showHideTransition: 'slide',
+                icon: 'success',
+                position: 'bottom-right',
+            })
             renderTable(currentPage);
+          },
+          error: function (err) {
+            $.toast({
+                heading: 'Error',
+                text: 'Edit user failed',
+                showHideTransition: 'slide',
+                icon: 'error',
+                position: 'bottom-right',
+            })
           },
         });
       };  

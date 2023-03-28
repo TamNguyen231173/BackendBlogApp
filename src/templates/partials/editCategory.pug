@@ -34,23 +34,3 @@
         button.btn.btn-light(type="button", data-dismiss="modal") Cancle
         button#button-save-update.btn.btn-primary(type="button") Save
 
-// Script for update category       
-script.
-  $(document).ready(function () {
-    $("#button-save-update").click(function () {
-      let name = $("#name-update").val();
-      let image = $("#image-update").val();
-      let id = $(this).val();
-
-      $.ajax(`/api/categories/${id}`, {
-        data: JSON.stringify({ name, image }),
-        type: "PATCH",
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        contentType: "application/json",
-        success: function () {
-          location.reload();
-          $("#primary-update-modal").modal("hide");
-        },
-      });
-    });
-  });

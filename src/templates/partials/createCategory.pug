@@ -33,19 +33,5 @@
 // Script for add category       
 script.
   $(document).ready(function () {
-    $("#button-save").click(function () {
-      let name = $("#name").val();
-      let image = $("#image").val();
-
-      $.ajax("/api/categories", {
-        data: JSON.stringify({ name, image }),
-        type: "POST",
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-        contentType: "application/json",
-        success: function () {
-          location.reload();
-          $("#primary-header-modal").modal("hide");
-        },
-      });
-    });
+    
   });

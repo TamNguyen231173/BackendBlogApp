@@ -76,16 +76,16 @@
                 input#title-input.form-control(
                   type="text",
                   style="\
-                                                                                                                                                                                                                                                            border: none; \
-                                                                                                                                                                                                                                                            border-bottom: 1px solid #e3e6f0; \
-                                                                                                                                                                                                                                                            border-radius: 0; \
-                                                                                                                                                                                                                                                            box-shadow: none; \
-                                                                                                                                                                                                                                                            font-size: 1.5rem; \
-                                                                                                                                                                                                                                                            font-weight: 700; \
-                                                                                                                                                                                                                                                            letter-spacing: 1px; \
-                                                                                                                                                                                                                                                            line-height: 1.5; \
-                                                                                                                                                                                                                                                            padding: 0.5rem 0; \
-                                                                                                                                                                                                                                                            text-transform: uppercase;",
+                                                                                                                                                                                                                                                                              border: none; \
+                                                                                                                                                                                                                                                                              border-bottom: 1px solid #e3e6f0; \
+                                                                                                                                                                                                                                                                              border-radius: 0; \
+                                                                                                                                                                                                                                                                              box-shadow: none; \
+                                                                                                                                                                                                                                                                              font-size: 1.5rem; \
+                                                                                                                                                                                                                                                                              font-weight: 700; \
+                                                                                                                                                                                                                                                                              letter-spacing: 1px; \
+                                                                                                                                                                                                                                                                              line-height: 1.5; \
+                                                                                                                                                                                                                                                                              padding: 0.5rem 0; \
+                                                                                                                                                                                                                                                                              text-transform: uppercase;",
                   placeholder="Enter title",
                   value=`${ post.title }`
                 )
@@ -191,10 +191,26 @@ script.
         data: JSON.stringify(data),
         contentType: "application/json",
         error: function (err) {
+          $.toast({
+            heading: "Error",
+            text: "Update post failed. Please try again",
+            showHideTransition: "slide",
+            icon: "error",
+            position: "bottom-right",
+          });
           console.log(err);
         },
         success: function (data) {
-          window.location.href = "/api/posts/getAllPosts";
+          $.toast({
+            heading: "Success",
+            text: "Add post successfully",
+            showHideTransition: "slide",
+            icon: "success",
+            position: "bottom-right",
+          });
+          setTimeout(() => {
+            window.location.href = "/api/posts/getAllPosts";
+          }, 1000);
         },
       });
     });

@@ -46,7 +46,7 @@ body.loading(data-layout="detached")
                         th.all id
                         th Category
                         th(style="width: 85px") Action
-                    tbody
+                    tbody#table-body
                       each category in categories
                         tr
                           td #{ category._id }
@@ -78,20 +78,110 @@ include ../partials/editCategory.pug
 include ../partials/scriptAccess.pug
 script.
   $(document).ready(function () {
-    // Catch event delete post
-    $("[id=btn-delete-category]").click(function () {
+    // Render table category
+    const renderTableCategory = function () {
+      $.ajax({
+        url: "/api/categories",
+        type: "GET",
+        success: function (data) {
+          let html = "";
+          data.categories.forEach((category) => {
+            html += `
+                <tr>
+                  <td>${category._id}</td>
+                  <td class="table-user">
+                    <img src="${category.image}" alt="table-user" class="mr-2 rounded-circle" />
+                    ${category.name}
+                  </td>
+                  <td class="table-action">
+                    <a id="btn-update-category" class="action-icon" data-toggle="modal" data-target="#primary-update-modal" value="${category._id}" style="cursor: pointer">
+                      <i class="mdi mdi-square-edit-outline"></i>
+                    </a>
+                    <a id="btn-delete-category" class="action-icon" value="${category._id}" style="cursor: pointer">
+                      <i class="mdi mdi-delete"></i>
+                    </a>
+                  </td>
+                </tr>
+              `;
+          });
+          $("#table-body").html(html);
+        },
+      });
+    };
+
+    // Reset form create category
+    const resetFormCreateCategory = function () {
+      $("#name").val("");
+      $("#image").val("");
+    };
+
+    // Add category function
+    const addCategory = function (data) {
+      $.ajax("/api/categories", {
+        data: JSON.stringify(data),
+        type: "POST",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        contentType: "application/json",
+        success: function () {
+          $.toast({
+            heading: "Success",
+            text: "Add category successfully",
+            position: "bottom-right",
+            loaderBg: "#ff6849",
+            icon: "success",
+            hideAfter: 3500,
+            stack: 6,
+          });
+          resetFormCreateCategory();
+          renderTableCategory();
+        },
+        error: function (err) {
+          $.toast({
+            heading: "Error",
+            text: "Add category failed",
+            position: "bottom-right",
+            loaderBg: "#FFB4B4",
+            icon: "error",
+            hideAfter: 3500,
+            stack: 6,
+          });
+          console.log(err);
+        },
+      });
+    };
+
+    // Catch event add category
+    $("#button-save").click(function () {
+      let name = $("#name").val();
+      let image = $("#image").val();
+      let data = { name, image };
+
+      addCategory(data);
+    });
+
+    // Catch event delete category
+    $("#table-body").on("click", "[id=btn-delete-category]", function () {
       var id = $(this).attr("value");
       $.ajax({
         url: "/api/categories/" + id,
         type: "DELETE",
         success: function () {
-          location.reload();
+          $.toast({
+            heading: "Success",
+            text: "Delete category successfully",
+            position: "bottom-right",
+            loaderBg: "#ff6849",
+            icon: "success",
+            hideAfter: 3500,
+            stack: 6,
+          });
+          renderTableCategory();
         },
       });
     });
 
-    // Catch event update post
-    $("[id=btn-update-category]").click(function () {
+    // Catch event update category
+    $("#table-body").on("click", "[id=btn-update-category]", function () {
       var id = $(this).attr("value");
       $.ajax({
         url: "/api/categories/" + id,
@@ -100,6 +190,44 @@ script.
           $("#button-save-update").attr("value", data.category._id);
           $("#name-update").val(data.category.name);
           $("#image-update").val(data.category.image);
+        },
+      });
+    });
+
+    // Update category function
+    $("#button-save-update").click(function () {
+      let name = $("#name-update").val();
+      let image = $("#image-update").val();
+      let id = $(this).val();
+
+      $.ajax(`/api/categories/${id}`, {
+        data: JSON.stringify({ name, image }),
+        type: "PATCH",
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+        contentType: "application/json",
+        success: function () {
+          $.toast({
+            heading: "Success",
+            text: "Update category successfully",
+            position: "bottom-right",
+            loaderBg: "#ff6849",
+            icon: "success",
+            hideAfter: 3500,
+            stack: 6,
+          });
+          renderTableCategory();
+        },
+        error: function (err) {
+          $.toast({
+            heading: "Error",
+            text: "Update category failed",
+            position: "bottom-right",
+            loaderBg: "#FFB4B4",
+            icon: "error",
+            hideAfter: 3500,
+            stack: 6,
+          });
+          console.log(err);
         },
       });
     });
