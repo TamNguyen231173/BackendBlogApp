@@ -50,3 +50,15 @@ export const findOneAndDelete = async (
 ) => {
   return await postModel.findOneAndDelete(query, options);
 };
+
+export const findPostsByCategory = async (_id: string, page: number) => {
+  let perPage = 10;
+  const posts = postModel
+    .find({ "category.id": _id })
+    .skip(perPage * page - perPage)
+    .limit(perPage)
+    .lean();
+
+  const count = await postModel.countDocuments();
+  return { posts, count };
+};

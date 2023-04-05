@@ -41,7 +41,7 @@ export const generateUserHandler = async (
   }
 };
 
-export const getMeHandler = (
+export const getMyInfoHandler = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -50,9 +50,7 @@ export const getMeHandler = (
     const user = res.locals.user;
     res.status(200).json({
       status: "success",
-      data: {
-        user,
-      },
+      user,
     });
   } catch (err: any) {
     next(err);

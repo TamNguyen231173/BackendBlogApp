@@ -43,7 +43,7 @@ export const updateUserSchema = object({
   body: object({
     name: string(),
     email: string().email("Invalid email"),
-    avartar: string(),
+    avatar: string(),
     role: string(),
   }).partial(),
 });

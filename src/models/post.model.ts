@@ -8,6 +8,7 @@ import {
   Ref,
   Severity,
 } from "@typegoose/typegoose";
+import Comment from "./comment.model";
 
 @pre<Post>("save", function (next) {
   this.id = this._id;
@@ -49,6 +50,12 @@ export class Post {
 
   @prop()
   images: string[];
+
+  @prop()
+  likes: string[];
+
+  @prop()
+  comments: Ref<Comment>[];
 
   @prop({ required: true })
   userInfo: {

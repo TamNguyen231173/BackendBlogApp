@@ -9,6 +9,7 @@ import {
   getPostsRender,
   getPostEditHandler,
   generatePostsHandler,
+  getPostsByCategoryHandler,
 } from "../controllers/post.controller";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -34,6 +35,10 @@ router.route("/editPost/:postId").get(getPostEditHandler);
 
 // Return JSON
 router.route("/generatePosts").post(generatePostsHandler);
+
+router
+  .route("/getPostsByCategory/:categoryId/:page")
+  .get(getPostsByCategoryHandler);
 
 router
   .route("/data/:page")

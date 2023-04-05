@@ -1,5 +1,6 @@
 import { number, object, string, TypeOf } from "zod";
 
+// ================ POST SCHEMA ================
 export const createPostSchema = object({
   body: object({
     title: string({
@@ -49,6 +50,19 @@ export const deletePostSchema = object({
   ...params,
 });
 
+export const getPostsByCategorySchema = object({
+  params: object({
+    categoryId: string(),
+    page: number(),
+  }),
+});
+
+export const createCommentSchema = object({
+  ...params,
+  
+});
+
+// ================ CATEGORY SCHEMA ================
 export const createCategorySchema = object({
   body: object({
     name: string({
@@ -89,4 +103,7 @@ export type DeleteCategoryInput = TypeOf<typeof deleteCategorySchema>["params"];
 export type GetAllPostsInput = TypeOf<typeof getAllPostsSchema>["params"];
 export type GetAllCategoriesInput = TypeOf<
   typeof getAllCategoriesSchema
+>["params"];
+export type GetPostsByCategoryInput = TypeOf<
+  typeof getPostsByCategorySchema
 >["params"];

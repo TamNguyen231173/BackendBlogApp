@@ -5,6 +5,7 @@ import {
   GetAllPostsInput,
   GetPostInput,
   UpdatePostInput,
+  GetPostsByCategoryInput,
 } from "../schema/post.schema";
 import {
   createPost,
@@ -12,6 +13,7 @@ import {
   findAndUpdatePost,
   findOneAndDelete,
   findPostById,
+  findPostsByCategory,
 } from "../services/post.service";
 import { findAllUsers, findUserById } from "../services/user.service";
 import { findAllCategories } from "../services/category.service";
@@ -273,4 +275,27 @@ export const parsePostFormData = (
   } catch (err: any) {
     next(err);
   }
+};
+
+export const getPostsByCategoryHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  let perPage = 10;
+  let page = parseInt(req.params.page);
+  const posts = await findPostsByCategory(req.params.category, page);
+  const user = await findUserById(res.locals.user._id);
+
+  if (!posts) {
+    return next(new AppError("Posts not found", 404));
+  }
+
+  res.status(204).json({
+    title: "posts",
+    posts: posts.posts,
+    current: page,
+    pages: Math.ceil(posts.count / perPage),
+    user,
+  });
 };

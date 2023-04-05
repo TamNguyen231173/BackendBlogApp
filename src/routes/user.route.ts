@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getAllUsersRender,
-  getMeHandler,
+  getMyInfoHandler,
   generateUserHandler,
   getUsersHandler,
 } from "../controllers/user.controller";
@@ -36,6 +36,6 @@ router
   .delete(restrictTo("admin"), validate(deleteUserSchema), deleteUserHandler);
 
 // Get my info route
-router.get("/me", getMeHandler);
+router.get("/info/me", getMyInfoHandler);
 
 export default router;
