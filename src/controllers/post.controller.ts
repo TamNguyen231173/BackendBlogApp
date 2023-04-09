@@ -6,6 +6,7 @@ import {
   GetPostInput,
   UpdatePostInput,
   GetPostsByCategoryInput,
+  GetPostsByUserInput,
 } from "../schema/post.schema";
 import {
   createPost,
@@ -14,6 +15,7 @@ import {
   findOneAndDelete,
   findPostById,
   findPostsByCategory,
+  findPostsByUser,
 } from "../services/post.service";
 import { findAllUsers, findUserById } from "../services/user.service";
 import { findAllCategories } from "../services/category.service";
@@ -277,25 +279,47 @@ export const parsePostFormData = (
   }
 };
 
+// Get posts by category handler
 export const getPostsByCategoryHandler = async (
-  req: Request,
+  req: Request<GetPostsByCategoryInput>,
   res: Response,
   next: NextFunction
 ) => {
   let perPage = 10;
-  let page = parseInt(req.params.page);
-  const posts = await findPostsByCategory(req.params.category, page);
-  const user = await findUserById(res.locals.user._id);
+  let page = req.params.page;
+  const posts = await findPostsByCategory(req.params.categoryId, page);
 
   if (!posts) {
     return next(new AppError("Posts not found", 404));
   }
 
-  res.status(204).json({
+  res.status(200).json({
     title: "posts",
     posts: posts.posts,
     current: page,
     pages: Math.ceil(posts.count / perPage),
-    user,
+  });
+};
+
+// Get posts by user handler
+export const getPostsByUserHandler = async (
+  req: Request<GetPostsByUserInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  let perPage = 10;
+  let page = req.params.page;
+
+  const posts = await findPostsByUser(req.params.userId, page);
+
+  if (!posts) {
+    return next(new AppError("Posts not found", 404));
+  }
+
+  res.status(200).json({
+    title: "posts",
+    posts: posts.posts,
+    current: page,
+    pages: Math.ceil(posts.count / perPage),
   });
 };

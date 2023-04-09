@@ -37,7 +37,7 @@ export class Post {
   content: string;
 
   @prop()
-  category: { _id: string; name: string };
+  category: { id: string; name: string };
 
   @prop({ default: "https://wallpaperaccess.com/full/397922.jpg" })
   logo: string;

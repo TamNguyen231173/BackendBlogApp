@@ -57,9 +57,15 @@ export const getPostsByCategorySchema = object({
   }),
 });
 
+export const getPostsByUser = object({
+  params: object({
+    userId: string(),
+    page: number(),
+  }),
+});
+
 export const createCommentSchema = object({
   ...params,
-  
 });
 
 // ================ CATEGORY SCHEMA ================
@@ -107,3 +113,4 @@ export type GetAllCategoriesInput = TypeOf<
 export type GetPostsByCategoryInput = TypeOf<
   typeof getPostsByCategorySchema
 >["params"];
+export type GetPostsByUserInput = TypeOf<typeof getPostsByUser>["params"];

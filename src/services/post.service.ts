@@ -51,12 +51,26 @@ export const findOneAndDelete = async (
   return await postModel.findOneAndDelete(query, options);
 };
 
-export const findPostsByCategory = async (_id: string, page: number) => {
-  let perPage = 10;
-  const posts = postModel
-    .find({ "category.id": _id })
-    .skip(perPage * page - perPage)
-    .limit(perPage)
+export const findPostsByCategory = async (id: string, page: number) => {
+  let perpage = 10;
+  const posts = await postModel
+    .find({ "category.id": id })
+    .sort({ _id: -1 })
+    .skip(perpage * page - perpage)
+    .limit(perpage)
+    .lean();
+
+  const count = await postModel.countDocuments();
+  return { posts, count };
+};
+
+export const findPostsByUser = async (id: string, page: number) => {
+  let perpage = 10;
+  const posts = await postModel
+    .find({ "userInfo._id": id })
+    .sort({ _id: -1 })
+    .skip(perpage * page - perpage)
+    .limit(perpage)
     .lean();
 
   const count = await postModel.countDocuments();
