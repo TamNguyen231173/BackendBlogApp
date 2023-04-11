@@ -80,3 +80,12 @@ export const addPostToBookmark = async (
 ) => {
   return userModel.findOneAndUpdate(query, update, options);
 };
+
+// Remove post from bookmark list
+export const removePostFromBookmark = async (
+  query: FilterQuery<User>,
+  update: { $pull: { bookmarks: Partial<Post> } },
+  options: QueryOptions = {}
+) => {
+  return userModel.findOneAndUpdate(query, update, options);
+};

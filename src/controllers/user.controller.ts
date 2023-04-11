@@ -6,6 +6,7 @@ import {
   findAndUpdateUser,
   findOneAndDelete,
   addPostToBookmark,
+  removePostFromBookmark,
 } from "../services/user.service";
 import { findPostById } from "../services/post.service";
 import { faker } from "@faker-js/faker";
@@ -15,7 +16,6 @@ import {
   UpdateUserInput,
   AddBookmarkInput,
   RemoveBookmarkInput,
-  GetBookmarkInput,
 } from "../schema/user.schema";
 import AppError from "../utils/appError";
 
@@ -237,13 +237,46 @@ export const getPostsInBookmarkHandler = async (
     const user = res.locals.user;
     const posts = user.bookmarks;
 
-    console.log("what the fuck");
-
     res.status(200).json({
       status: "success",
       posts,
     });
   } catch (err: any) {
     next(err);
+  }
+};
+
+// Remove post in bookmark
+export const removePostFromBookmarkHandler = async (
+  req: Request<RemoveBookmarkInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = res.locals.user;
+  const postId = req.body.postId;
+  const post = user.bookmarks.find((bookmark: any) => bookmark.id === postId);
+
+  if (!post) {
+    return next(new AppError("Post not found", 404));
+  }
+
+  try {
+    await removePostFromBookmark(
+      {
+        _id: user._id,
+      },
+      {
+        $pull: { bookmarks: post },
+      }
+    );
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        message: "Post removed from bookmark successfully",
+      },
+    });
+  } catch (error: any) {
+    next(error);
   }
 };

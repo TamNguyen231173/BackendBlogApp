@@ -78,14 +78,8 @@ export const addBookmarkSchema = object({
   }),
 });
 
-// Get bookmark schema
-export const getBookmarkSchema = object({
-  ...params,
-});
-
 // Remove bookmark schema
 export const removeBookmarkSchema = object({
-  ...params,
   body: object({
     postId: string({ required_error: "Id of post is required" }),
   }),
@@ -101,5 +95,4 @@ export type ResendVerificationCodeInput = TypeOf<
   typeof resendVerificationCodeSchema
 >["body"];
 export type AddBookmarkInput = TypeOf<typeof addBookmarkSchema>["body"];
-export type GetBookmarkInput = TypeOf<typeof getBookmarkSchema>["params"];
-export type RemoveBookmarkInput = TypeOf<typeof removeBookmarkSchema>;
+export type RemoveBookmarkInput = TypeOf<typeof removeBookmarkSchema>["body"];
