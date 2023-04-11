@@ -5,6 +5,7 @@ import {
   generateUserHandler,
   getUsersHandler,
   addPostToBookmarkHandler,
+  getPostsInBookmarkHandler,
 } from "../controllers/user.controller";
 import {
   deleteUserHandler,
@@ -29,7 +30,7 @@ router.use(deserializeUser, requireUser);
 router.post("/generateUsers", generateUserHandler);
 
 // Admin Get Users route. CRUD users
-router.get("/:page", restrictTo("admin"), getAllUsersRender);
+router.get("/getAllUser/:page", restrictTo("admin"), getAllUsersRender);
 router.get("/data/:page", restrictTo("admin"), getUsersHandler);
 router
   .route("/manager/:userId")
@@ -41,7 +42,8 @@ router
 router.get("/info/me", getMyInfoHandler);
 
 router
-  .route("/bookmarks")
+  .route("/bookmarks/:page")
+  .get(getPostsInBookmarkHandler)
   .post(validate(addBookmarkSchema), addPostToBookmarkHandler);
 
 export default router;

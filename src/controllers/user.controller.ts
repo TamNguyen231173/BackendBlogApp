@@ -237,6 +237,8 @@ export const getPostsInBookmarkHandler = async (
     const user = res.locals.user;
     const posts = user.bookmarks;
 
+    console.log("what the fuck");
+
     res.status(200).json({
       status: "success",
       posts,
