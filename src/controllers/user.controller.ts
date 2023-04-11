@@ -14,6 +14,7 @@ import {
 } from "../schema/user.schema";
 import AppError from "../utils/appError";
 
+// Generate 200 users
 export const generateUserHandler = async (
   req: Request,
   res: Response,
@@ -41,6 +42,7 @@ export const generateUserHandler = async (
   }
 };
 
+// Get my info
 export const getMyInfoHandler = (
   req: Request,
   res: Response,
@@ -57,6 +59,7 @@ export const getMyInfoHandler = (
   }
 };
 
+// Get all users (render)
 export const getAllUsersRender = async (
   req: Request,
   res: Response,
@@ -78,6 +81,7 @@ export const getAllUsersRender = async (
   }
 };
 
+// Get all users
 export const getUsersHandler = async (
   req: Request,
   res: Response,
@@ -100,6 +104,7 @@ export const getUsersHandler = async (
   }
 };
 
+// Get user by id
 export const getUserHandler = async (
   req: Request<GetUserInput>,
   res: Response,
@@ -120,6 +125,7 @@ export const getUserHandler = async (
   }
 };
 
+// Update user by id
 export const updateUserHandler = async (
   req: Request<UpdateUserInput["params"], {}, UpdateUserInput["body"]>,
   res: Response,
@@ -147,6 +153,7 @@ export const updateUserHandler = async (
   }
 };
 
+// Delete user by id
 export const deleteUserHandler = async (
   req: Request<DeleteUserInput>,
   res: Response,
@@ -164,6 +171,37 @@ export const deleteUserHandler = async (
       data: {
         message: "User deleted successfully",
       },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+// Add post to bookmark
+export const addPostToBookmarkHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = res.locals.user;
+  const postId = req.params.postId;
+
+  
+};
+
+// Get posts in bookmark
+export const getPostsInBookmarkHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = res.locals.user;
+    const posts = user.bookmarks;
+
+    res.status(200).json({
+      status: "success",
+      posts,
     });
   } catch (err: any) {
     next(err);

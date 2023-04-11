@@ -52,9 +52,6 @@ export class Post {
   images: string[];
 
   @prop()
-  likes: string[];
-
-  @prop()
   comments: Ref<Comment>[];
 
   @prop({ required: true })

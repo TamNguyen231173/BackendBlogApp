@@ -6,6 +6,7 @@ const params = {
   }),
 };
 
+// Create user schema
 export const createUserSchema = object({
   body: object({
     name: string({ required_error: "Name is required" }),
@@ -22,6 +23,7 @@ export const createUserSchema = object({
   }),
 });
 
+// Login user schema
 export const loginUserSchema = object({
   body: object({
     email: string({ required_error: "Email is required" }).email(
@@ -31,6 +33,13 @@ export const loginUserSchema = object({
       8,
       "Invalid email or password"
     ),
+  }),
+});
+
+// Verify email schema
+export const verifyEmailSchema = object({
+  params: object({
+    verificationCode: string(),
   }),
 });
 
@@ -48,6 +57,16 @@ export const updateUserSchema = object({
   }).partial(),
 });
 
+// Resend verification code schema
+export const resendVerificationCodeSchema = object({
+  body: object({
+    email: string({ required_error: "Email is required" }).email(
+      "Invalid email"
+    ),
+  }),
+});
+
+// Delete user schema
 export const deleteUserSchema = object({
   ...params,
 });
@@ -57,3 +76,7 @@ export type LoginUserInput = TypeOf<typeof loginUserSchema>["body"];
 export type GetUserInput = TypeOf<typeof getUserSchema>["params"];
 export type UpdateUserInput = TypeOf<typeof updateUserSchema>;
 export type DeleteUserInput = TypeOf<typeof deleteUserSchema>["params"];
+export type VerifyEmailInput = TypeOf<typeof verifyEmailSchema>["params"];
+export type ResendVerificationCodeInput = TypeOf<
+  typeof resendVerificationCodeSchema
+>["body"];

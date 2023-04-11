@@ -2,6 +2,7 @@ import { omit, get } from "lodash";
 import { FilterQuery, QueryOptions } from "mongoose";
 import config from "config";
 import userModel, { User } from "../models/user.model";
+import { Post } from "../models/post.model";
 import { excludedFields } from "../controllers/auth.controller";
 import { signJwt } from "../utils/jwt";
 import redisClient from "../utils/connectRedis";
@@ -70,4 +71,13 @@ export const findOneAndDelete = async (
   options: QueryOptions = {}
 ) => {
   return await userModel.findOneAndDelete(query, options);
+};
+
+// Add post to bookmark list
+export const addPostToBookmark = async (
+  query: FilterQuery<User>,
+  update: { $push: { bookmarks: Post } },
+  options: QueryOptions
+) => {
+  return userModel.findOneAndUpdate(query, update, options);
 };

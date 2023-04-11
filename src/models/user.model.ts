@@ -7,6 +7,7 @@ import {
   prop,
 } from "@typegoose/typegoose";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 @index({ email: 1 })
 @pre<User>("save", async function () {
@@ -37,12 +38,33 @@ export class User {
   @prop({ default: "https://avatarfiles.alphacoders.com/182/182133.jpg" })
   avatar: string;
 
+  @prop({ default: false })
+  verified: boolean;
+
   @prop({ default: "user" })
   role: string;
+
+  @prop()
+  bookmarks: string[];
+
+  @prop({ select: false })
+  verificationCode: string | null;
 
   // Instance method to check if passwords match
   async comparePasswords(hashedPassword: string, candidatePassword: string) {
     return await bcrypt.compare(candidatePassword, hashedPassword);
+  }
+
+  createVerificationCode() {
+    // Generate 4 digit number and convert it to string
+    const verificationCode = Math.floor(1000 + Math.random() * 9000).toString();
+
+    this.verificationCode = crypto
+      .createHash("sha256")
+      .update(verificationCode)
+      .digest("hex");
+
+    return verificationCode;
   }
 }
 
