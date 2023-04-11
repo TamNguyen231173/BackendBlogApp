@@ -71,6 +71,26 @@ export const deleteUserSchema = object({
   ...params,
 });
 
+// Add bookmark schema
+export const addBookmarkSchema = object({
+  body: object({
+    postId: string({ required_error: "Id of post is required" }),
+  }),
+});
+
+// Get bookmark schema
+export const getBookmarkSchema = object({
+  ...params,
+});
+
+// Remove bookmark schema
+export const removeBookmarkSchema = object({
+  ...params,
+  body: object({
+    postId: string({ required_error: "Id of post is required" }),
+  }),
+});
+
 export type CreateUserInput = TypeOf<typeof createUserSchema>["body"];
 export type LoginUserInput = TypeOf<typeof loginUserSchema>["body"];
 export type GetUserInput = TypeOf<typeof getUserSchema>["params"];
@@ -80,3 +100,6 @@ export type VerifyEmailInput = TypeOf<typeof verifyEmailSchema>["params"];
 export type ResendVerificationCodeInput = TypeOf<
   typeof resendVerificationCodeSchema
 >["body"];
+export type AddBookmarkInput = TypeOf<typeof addBookmarkSchema>["body"];
+export type GetBookmarkInput = TypeOf<typeof getBookmarkSchema>["params"];
+export type RemoveBookmarkInput = TypeOf<typeof removeBookmarkSchema>;

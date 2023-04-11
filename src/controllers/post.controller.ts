@@ -32,33 +32,33 @@ export const generatePostsHandler = async (
     const user = await findAllUsers(1);
     const Category = await findAllCategories();
     for (let i = 0; i < 200; i++) {
-      const userFake = faker.helpers.arrayElement(user);
-      const categoryFake = faker.helpers.arrayElement(Category);
-      const post = await createPost({
-        input: {
-          title: faker.lorem.sentence(),
-          content: faker.lorem.paragraph(),
-          logo:
-            faker.image.imageUrl(1920, 1080) +
-            "?random=" +
-            Math.round(Math.random() * 1000),
-          image:
-            faker.image.imageUrl(1920, 1080) +
-            "?random=" +
-            Math.round(Math.random() * 1000),
-          category: {
-            _id: categoryFake._id.toString(),
-            name: categoryFake.name,
-          },
-          userInfo: {
-            _id: userFake._id.toString(),
-            name: userFake.name,
-            email: userFake.email,
-            avatar: userFake.avatar,
-          },
-        },
-        user_id: userFake._id.toString(),
-      });
+      // const userFake = faker.helpers.arrayElement(user);
+      // const categoryFake = faker.helpers.arrayElement(Category);
+      // const post = await createPost({
+      //   input: {
+      //     title: faker.lorem.sentence(),
+      //     content: faker.lorem.paragraph(),
+      //     logo:
+      //       faker.image.imageUrl(1920, 1080) +
+      //       "?random=" +
+      //       Math.round(Math.random() * 1000),
+      //     image:
+      //       faker.image.imageUrl(1920, 1080) +
+      //       "?random=" +
+      //       Math.round(Math.random() * 1000),
+      //     category: {
+      //       id: categoryFake._id.toString(),
+      //       name: categoryFake.name,
+      //     },
+      //     userInfo: {
+      //       _id: userFake._id.toString(),
+      //       name: userFake.name,
+      //       email: userFake.email,
+      //       avatar: userFake.avatar,
+      //     },
+      //   },
+      //   user_id: userFake._id.toString(),
+      // });
     }
 
     res.status(201).json({

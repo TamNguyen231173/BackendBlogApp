@@ -3,7 +3,6 @@ import { FilterQuery, QueryOptions } from "mongoose";
 import config from "config";
 import userModel, { User } from "../models/user.model";
 import { Post } from "../models/post.model";
-import { excludedFields } from "../controllers/auth.controller";
 import { signJwt } from "../utils/jwt";
 import redisClient from "../utils/connectRedis";
 import { DocumentType } from "@typegoose/typegoose";
@@ -76,8 +75,8 @@ export const findOneAndDelete = async (
 // Add post to bookmark list
 export const addPostToBookmark = async (
   query: FilterQuery<User>,
-  update: { $push: { bookmarks: Post } },
-  options: QueryOptions
+  update: { $push: { bookmarks: Partial<Post> } },
+  options: QueryOptions = {}
 ) => {
   return userModel.findOneAndUpdate(query, update, options);
 };

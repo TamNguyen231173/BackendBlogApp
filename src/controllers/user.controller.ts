@@ -5,12 +5,17 @@ import {
   findUserById,
   findAndUpdateUser,
   findOneAndDelete,
+  addPostToBookmark,
 } from "../services/user.service";
+import { findPostById } from "../services/post.service";
 import { faker } from "@faker-js/faker";
 import {
   DeleteUserInput,
   GetUserInput,
   UpdateUserInput,
+  AddBookmarkInput,
+  RemoveBookmarkInput,
+  GetBookmarkInput,
 } from "../schema/user.schema";
 import AppError from "../utils/appError";
 
@@ -179,14 +184,47 @@ export const deleteUserHandler = async (
 
 // Add post to bookmark
 export const addPostToBookmarkHandler = async (
-  req: Request,
+  req: Request<AddBookmarkInput>,
   res: Response,
   next: NextFunction
 ) => {
   const user = res.locals.user;
-  const postId = req.params.postId;
+  const post = await findPostById(req.body.postId);
 
-  
+  if (!post) {
+    return next(new AppError("Post not found", 404));
+  }
+
+  // Check if post already in bookmark
+  if (user.bookmarks.length > 0) {
+    const isPostInBookmark = user.bookmarks.findIndex(
+      (bookmark: any) => bookmark._id.toString() === post._id.toString()
+    );
+
+    if (isPostInBookmark !== -1) {
+      return next(new AppError("Post already in bookmark", 400));
+    }
+  }
+
+  try {
+    await addPostToBookmark(
+      {
+        _id: user._id,
+      },
+      {
+        $push: { bookmarks: post },
+      }
+    );
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        message: "Post added to bookmark successfully",
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
 };
 
 // Get posts in bookmark

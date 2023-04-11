@@ -4,6 +4,7 @@ import {
   getMyInfoHandler,
   generateUserHandler,
   getUsersHandler,
+  addPostToBookmarkHandler,
 } from "../controllers/user.controller";
 import {
   deleteUserHandler,
@@ -15,6 +16,7 @@ import {
   deleteUserSchema,
   getUserSchema,
   updateUserSchema,
+  addBookmarkSchema,
 } from "../schema/user.schema";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -37,5 +39,9 @@ router
 
 // Get my info route
 router.get("/info/me", getMyInfoHandler);
+
+router
+  .route("/bookmarks")
+  .post(validate(addBookmarkSchema), addPostToBookmarkHandler);
 
 export default router;
