@@ -2,7 +2,7 @@ import { omit, get } from "lodash";
 import { FilterQuery, QueryOptions } from "mongoose";
 import config from "config";
 import userModel, { User } from "../models/user.model";
-import { Post } from "../models/post.model";
+import postModel, { Post } from "../models/post.model";
 import { signJwt } from "../utils/jwt";
 import redisClient from "../utils/connectRedis";
 import { DocumentType } from "@typegoose/typegoose";
@@ -72,20 +72,36 @@ export const findOneAndDelete = async (
   return await userModel.findOneAndDelete(query, options);
 };
 
-// Add post to bookmark list
-export const addPostToBookmark = async (
-  query: FilterQuery<User>,
-  update: { $push: { bookmarks: Partial<Post> } },
-  options: QueryOptions = {}
-) => {
-  return userModel.findOneAndUpdate(query, update, options);
+// Toggle bookmark
+export const toggleBookmark = async (userId: string, postId: string) => {
+  const user = await userModel.findById(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const bookmarkIndex = user.bookmarks.indexOf(postId);
+  if (bookmarkIndex === -1) {
+    // If post is not bookmarked, add it to bookmarks
+    user.bookmarks.push(postId);
+  } else {
+    // If post is already bookmarked, remove it from bookmarks
+    user.bookmarks.splice(bookmarkIndex, 1);
+  }
+
+  return await user.save();
 };
 
-// Remove post from bookmark list
-export const removePostFromBookmark = async (
-  query: FilterQuery<User>,
-  update: { $pull: { bookmarks: Partial<Post> } },
-  options: QueryOptions = {}
-) => {
-  return userModel.findOneAndUpdate(query, update, options);
+// Get user bookmarks
+export const getUserBookmarks = async (userId: string) => {
+  const user = await userModel.findById(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const bookmarks = await postModel.find({ _id: { $in: user.bookmarks } }).lean();
+
+  return bookmarks;
 };
+
+
+

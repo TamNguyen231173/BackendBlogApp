@@ -4,9 +4,8 @@ import {
   getMyInfoHandler,
   generateUserHandler,
   getUsersHandler,
-  addPostToBookmarkHandler,
   getPostsInBookmarkHandler,
-  removePostFromBookmarkHandler,
+  toggleBookmarkHandler,
 } from "../controllers/user.controller";
 import {
   deleteUserHandler,
@@ -18,8 +17,7 @@ import {
   deleteUserSchema,
   getUserSchema,
   updateUserSchema,
-  addBookmarkSchema,
-  removeBookmarkSchema,
+  toggleBookmarkSchema,
 } from "../schema/user.schema";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -46,7 +44,6 @@ router.get("/info/me", getMyInfoHandler);
 router
   .route("/bookmarks/:page")
   .get(getPostsInBookmarkHandler)
-  .post(validate(addBookmarkSchema), addPostToBookmarkHandler)
-  .delete(validate(removeBookmarkSchema), removePostFromBookmarkHandler);
+  .post(validate(toggleBookmarkSchema), toggleBookmarkHandler);
 
 export default router;
