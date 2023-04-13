@@ -64,10 +64,6 @@ export const getPostsByUser = object({
   }),
 });
 
-export const createCommentSchema = object({
-  ...params,
-});
-
 // ================ CATEGORY SCHEMA ================
 export const createCategorySchema = object({
   body: object({
@@ -98,6 +94,29 @@ export const deleteCategorySchema = object({
   ...paramsCategory,
 });
 
+// ================ COMMENT SCHEMA ================
+export const createCommentSchema = object({
+  ...params,
+  body: object({
+    postId: string({ required_error: "PostId is required" }),
+    content: string({
+      required_error: "Content is required",
+    }),
+  }),
+});
+
+export const createReplySchema = object({
+  ...params,
+  body: object({
+    content: string({
+      required_error: "Content is required",
+    }),
+    commentId: string({
+      required_error: "CommentId is required",
+    }),
+  }),
+});
+
 export type CreatePostInput = TypeOf<typeof createPostSchema>["body"];
 export type GetPostInput = TypeOf<typeof getPostSchema>["params"];
 export type UpdatePostInput = TypeOf<typeof updatePostSchema>;
@@ -114,3 +133,5 @@ export type GetPostsByCategoryInput = TypeOf<
   typeof getPostsByCategorySchema
 >["params"];
 export type GetPostsByUserInput = TypeOf<typeof getPostsByUser>["params"];
+export type CreateCommentInput = TypeOf<typeof createCommentSchema>["body"];
+export type CreateReplyInput = TypeOf<typeof createReplySchema>["body"];

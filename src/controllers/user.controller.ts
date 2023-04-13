@@ -188,8 +188,11 @@ export const toggleBookmarkHandler = async (
   next: NextFunction
 ) => {
   try {
+    console.log("request body", req.body);
     const user = res.locals.user;
     const postId = req.body.postId;
+
+    console.log("post id", postId);
 
     const post = await findPostById(postId);
     if (!post) {
@@ -204,7 +207,7 @@ export const toggleBookmarkHandler = async (
         message: "Bookmark toggled successfully",
         user: updatedUser,
       },
-    });
+    });2
   } catch (err: any) {
     next(err);
   }

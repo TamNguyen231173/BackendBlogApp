@@ -7,6 +7,8 @@ import {
   UpdatePostInput,
   GetPostsByCategoryInput,
   GetPostsByUserInput,
+  CreateCommentInput,
+  CreateReplyInput,
 } from "../schema/post.schema";
 import {
   createPost,
@@ -16,6 +18,7 @@ import {
   findPostById,
   findPostsByCategory,
   findPostsByUser,
+  createComment,
 } from "../services/post.service";
 import { findAllUsers, findUserById } from "../services/user.service";
 import { findAllCategories } from "../services/category.service";
@@ -323,3 +326,32 @@ export const getPostsByUserHandler = async (
     pages: Math.ceil(posts.count / perPage),
   });
 };
+
+// Create comment for post handler
+export const createCommentHandler = async (
+  req: Request<CreateCommentInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const comment = await createComment({
+      post_id: req.params.postId,
+      user_id: res.locals.user._id,
+      comment: req.body.content,
+    });
+
+    if (!comment) {
+      return next(new AppError("Comment not created", 404));
+    }
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        comment,
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+

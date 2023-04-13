@@ -11,6 +11,7 @@ import {
   generatePostsHandler,
   getPostsByCategoryHandler,
   getPostsByUserHandler,
+  createCommentHandler,
 } from "../controllers/post.controller";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -65,5 +66,8 @@ router
     updatePostHandler
   )
   .delete(validate(deletePostSchema), deletePostHandler);
+
+router.route("/comments/:postId/:page").post(createCommentHandler);
+
 
 export default router;
