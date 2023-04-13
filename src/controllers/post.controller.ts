@@ -19,6 +19,7 @@ import {
   findPostsByCategory,
   findPostsByUser,
   createComment,
+  createCommentReply,
 } from "../services/post.service";
 import { findAllUsers, findUserById } from "../services/user.service";
 import { findAllCategories } from "../services/category.service";
@@ -355,3 +356,31 @@ export const createCommentHandler = async (
   }
 };
 
+// Create reply for comment handler
+export const createReplyHandler = async (
+  req: Request<CreateReplyInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const reply = await createCommentReply({
+      post_id: req.params.postId,
+      user_id: res.locals.user._id,
+      comment_id: req.params.commentId,
+      comment: req.body.content,
+    });
+
+    if (!reply) {
+      return next(new AppError("Reply not created", 404));
+    }
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        reply,
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};

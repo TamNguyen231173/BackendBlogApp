@@ -12,6 +12,7 @@ import {
   getPostsByCategoryHandler,
   getPostsByUserHandler,
   createCommentHandler,
+  createReplyHandler,
 } from "../controllers/post.controller";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -21,6 +22,8 @@ import {
   deletePostSchema,
   getPostSchema,
   updatePostSchema,
+  createCommentSchema,
+  createReplySchema,
 } from "../schema/post.schema";
 import {
   resizePostImage,
@@ -67,7 +70,12 @@ router
   )
   .delete(validate(deletePostSchema), deletePostHandler);
 
-router.route("/comments/:postId/:page").post(createCommentHandler);
+router
+  .route("/comments/:postId/:page")
+  .post(validate(createCommentSchema), createCommentHandler);
 
+router
+  .route("/replies/:postId/:commentId/:page")
+  .post(validate(createReplySchema), createReplyHandler);
 
 export default router;

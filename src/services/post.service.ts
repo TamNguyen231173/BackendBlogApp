@@ -110,22 +110,33 @@ export const createComment = async ({
 
 // Create comment reply for post
 export const createCommentReply = async ({
+  post_id,
   comment_id,
   user_id,
-  reply,
+  comment,
 }: {
+  post_id: string;
   comment_id: string;
   user_id: string;
-  reply: string;
+  comment: string;
 }) => {
-  const replyCreated = await commentModel.create({ user_id, reply });
-  return await postModel.findOneAndUpdate(
-    { "comments._id": comment_id },
-    {
-      $push: {
-        "comments.$.replies": replyCreated,
+  const commentCreated = await commentModel.create({ user_id, comment });
+
+  const commentPostUpdate = await postModel
+    .findByIdAndUpdate(
+      post_id,
+      {
+        $push: {
+          "comments.$[comment].replies": commentCreated,
+        },
       },
-    },
-    { new: true }
-  );
+      {
+        upsert: true,
+        new: true,
+        arrayFilters: [{ "comment.id": comment_id }],
+      }
+    )
+    .select("comments");
+
+  return commentPostUpdate;
 };

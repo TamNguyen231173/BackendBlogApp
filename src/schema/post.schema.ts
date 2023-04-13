@@ -98,21 +98,24 @@ export const deleteCategorySchema = object({
 export const createCommentSchema = object({
   ...params,
   body: object({
-    postId: string({ required_error: "PostId is required" }),
     content: string({
       required_error: "Content is required",
     }),
   }),
 });
 
+const paramsReply = {
+  params: object({
+    postId: string(),
+    commentId: string(),
+  }),
+};
+
 export const createReplySchema = object({
-  ...params,
+  ...paramsReply,
   body: object({
     content: string({
       required_error: "Content is required",
-    }),
-    commentId: string({
-      required_error: "CommentId is required",
     }),
   }),
 });
