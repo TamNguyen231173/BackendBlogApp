@@ -120,6 +120,10 @@ export const createReplySchema = object({
   }),
 });
 
+export const getCommentsOfPostSchema = object({
+  ...params,
+});
+
 export type CreatePostInput = TypeOf<typeof createPostSchema>["body"];
 export type GetPostInput = TypeOf<typeof getPostSchema>["params"];
 export type UpdatePostInput = TypeOf<typeof updatePostSchema>;
@@ -138,3 +142,6 @@ export type GetPostsByCategoryInput = TypeOf<
 export type GetPostsByUserInput = TypeOf<typeof getPostsByUser>["params"];
 export type CreateCommentInput = TypeOf<typeof createCommentSchema>["body"];
 export type CreateReplyInput = TypeOf<typeof createReplySchema>["body"];
+export type GetCommentsOfPostInput = TypeOf<
+  typeof getCommentsOfPostSchema
+>["params"];

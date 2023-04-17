@@ -13,6 +13,7 @@ import {
   getPostsByUserHandler,
   createCommentHandler,
   createReplyHandler,
+  getCommentsHandler,
 } from "../controllers/post.controller";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -24,6 +25,7 @@ import {
   updatePostSchema,
   createCommentSchema,
   createReplySchema,
+  getCommentsOfPostSchema,
 } from "../schema/post.schema";
 import {
   resizePostImage,
@@ -72,6 +74,7 @@ router
 
 router
   .route("/comments/:postId/:page")
+  .get(validate(getCommentsOfPostSchema), getCommentsHandler)
   .post(validate(createCommentSchema), createCommentHandler);
 
 router

@@ -98,10 +98,9 @@ export const getUserBookmarks = async (userId: string) => {
     throw new Error("User not found");
   }
 
-  const bookmarks = await postModel.find({ _id: { $in: user.bookmarks } }).lean();
+  const bookmarks = await postModel
+    .find({ _id: { $in: user.bookmarks } })
+    .lean();
 
   return bookmarks;
 };
-
-
-

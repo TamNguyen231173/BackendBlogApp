@@ -9,6 +9,7 @@ import {
   GetPostsByUserInput,
   CreateCommentInput,
   CreateReplyInput,
+  GetCommentsOfPostInput,
 } from "../schema/post.schema";
 import {
   createPost,
@@ -20,6 +21,7 @@ import {
   findPostsByUser,
   createComment,
   createCommentReply,
+  findCommentsByPostId,
 } from "../services/post.service";
 import { findAllUsers, findUserById } from "../services/user.service";
 import { findAllCategories } from "../services/category.service";
@@ -378,6 +380,31 @@ export const createReplyHandler = async (
       status: "success",
       data: {
         reply,
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+// Get comments for post handler
+export const getCommentsHandler = async (
+  req: Request<GetCommentsOfPostInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  let perPage = 10;
+  try {
+    const comments = await findCommentsByPostId(req.params.postId);
+
+    if (!comments) {
+      return next(new AppError("Comments not found", 404));
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        comments,
       },
     });
   } catch (err: any) {

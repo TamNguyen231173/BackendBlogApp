@@ -96,7 +96,7 @@ export const createComment = async ({
   user_id: string;
   comment: string;
 }) => {
-  const commentCreated = await commentModel.create({ user_id, comment });
+  const commentCreated = await commentModel.create({ users: user_id, comment });
   return await postModel.findByIdAndUpdate(
     post_id,
     {
@@ -120,7 +120,7 @@ export const createCommentReply = async ({
   user_id: string;
   comment: string;
 }) => {
-  const commentCreated = await commentModel.create({ user_id, comment });
+  const commentCreated = await commentModel.create({ users: user_id, comment });
 
   const commentPostUpdate = await postModel
     .findByIdAndUpdate(
@@ -137,6 +137,34 @@ export const createCommentReply = async ({
       }
     )
     .select("comments");
+    
+  console.log("commentCreated", commentPostUpdate);
 
   return commentPostUpdate;
+};
+
+// Get comments of post with user info
+export const findCommentsByPostId = async (post_id: string) => {
+  return await postModel
+    .findById(post_id)
+    .populate({
+      path: "comments",
+      populate: {
+        path: "users",
+        model: "User",
+        select: "name avatar",
+      },
+    })
+    .populate({
+      path: "comments",
+      populate: {
+        path: "replies",
+        populate: {
+          path: "users",
+          model: "User",
+          select: "name avatar",
+        },
+      },
+    })
+    .select("comments");
 };

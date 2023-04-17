@@ -1,10 +1,13 @@
 import {
   getModelForClass,
   modelOptions,
+  mongoose,
   pre,
   prop,
+  Ref,
   Severity,
 } from "@typegoose/typegoose";
+import { User } from "./user.model";
 
 @pre<Comment>("save", function (next) {
   this.id = this._id;
@@ -31,8 +34,8 @@ export class Comment {
   @prop()
   likes: string[];
 
-  @prop({ required: true })
-  user_id: string;
+  @prop({ required: true, ref: "users" })
+  users: mongoose.Schema.Types.ObjectId;
 }
 
 const commentModel = getModelForClass(Comment);

@@ -8,7 +8,6 @@ import {
   Ref,
   Severity,
 } from "@typegoose/typegoose";
-import Comment from "./comment.model";
 
 @pre<Post>("save", function (next) {
   this.id = this._id;
