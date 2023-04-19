@@ -97,6 +97,7 @@ export const createComment = async ({
   comment: string;
 }) => {
   const commentCreated = await commentModel.create({ users: user_id, comment });
+  console.log("object", commentCreated);
   return await postModel.findByIdAndUpdate(
     post_id,
     {
@@ -137,7 +138,7 @@ export const createCommentReply = async ({
       }
     )
     .select("comments");
-    
+
   console.log("commentCreated", commentPostUpdate);
 
   return commentPostUpdate;
@@ -167,4 +168,77 @@ export const findCommentsByPostId = async (post_id: string) => {
       },
     })
     .select("comments");
+};
+
+// Edit comment of post
+export const findAndUpdateComment = async ({
+  post_id,
+  comment_id,
+  comment,
+}: {
+  post_id: string;
+  comment_id: string;
+  comment: string;
+}) => {
+  // Edit comment and comment reply with $or
+  return await postModel
+    .findOneAndUpdate(
+      {
+        id: post_id,
+        $or: [
+          { "comments.id": comment_id },
+          { "comments.replies.id": comment_id },
+        ],
+      },
+      {
+        $set: {
+          "comments.$[comment].comment": comment,
+          "comments.$[reply].replies.$[replyComment].comment": comment,
+        },
+      },
+      {
+        new: true,
+        arrayFilters: [
+          { "comment.id": comment_id },
+          { "reply.replies.id": comment_id },
+          { "replyComment.id": comment_id },
+        ],
+      }
+    )
+    .select("comments");
+};
+
+// Delete comment of post
+export const findOneAndDeleteComment = async ({
+  post_id,
+  comment_id,
+}: {
+  post_id: string;
+  comment_id: string;
+}) => {
+  // Remove comment reply
+  const CommentPost = await postModel.findOneAndUpdate(
+    { id: post_id },
+    {
+      $pull: { "comments.$[elem].replies": { id: comment_id } },
+    },
+    {
+      arrayFilters: [{ "elem.replies.id": comment_id }],
+      new: true,
+    }
+  );
+
+  // Remove comment
+  const updatedPost = await postModel.findOneAndUpdate(
+    { id: post_id },
+    {
+      $pull: { comments: { id: comment_id } },
+    },
+    {
+      new: true,
+    }
+  );
+
+  console.log("object", CommentPost);
+  return CommentPost;
 };

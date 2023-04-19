@@ -10,6 +10,8 @@ import {
   CreateCommentInput,
   CreateReplyInput,
   GetCommentsOfPostInput,
+  EditCommentInput,
+  DeleteCommentInput,
 } from "../schema/post.schema";
 import {
   createPost,
@@ -22,6 +24,8 @@ import {
   createComment,
   createCommentReply,
   findCommentsByPostId,
+  findAndUpdateComment,
+  findOneAndDeleteComment,
 } from "../services/post.service";
 import { findAllUsers, findUserById } from "../services/user.service";
 import { findAllCategories } from "../services/category.service";
@@ -406,6 +410,58 @@ export const getCommentsHandler = async (
       data: {
         comments,
       },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+// Edit comment handler
+export const editCommentHandler = async (
+  req: Request<EditCommentInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const comment = await findAndUpdateComment({
+      post_id: req.params.postId,
+      comment_id: req.params.commentId,
+      comment: req.body.content,
+    });
+
+    if (!comment) {
+      return next(new AppError("Comment not found", 404));
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        comment,
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+// Delete comment handler
+export const deleteCommentHandler = async (
+  req: Request<DeleteCommentInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const comment = await findOneAndDeleteComment({
+      post_id: req.params.postId,
+      comment_id: req.params.commentId,
+    });
+
+    if (!comment) {
+      return next(new AppError("Comment not found", 404));
+    }
+
+    res.status(204).json({
+      status: "success",
     });
   } catch (err: any) {
     next(err);
