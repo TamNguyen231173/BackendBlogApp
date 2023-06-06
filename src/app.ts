@@ -88,3 +88,5 @@ app.listen(port, () => {
   // 👇 call the connectDB function here
   connectDB();
 });
+
+export default app;
