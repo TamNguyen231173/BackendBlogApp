@@ -1,3 +1,3 @@
 {
-  "rewrites": [{ "source": "/src/app.ts", "destination": "/healthChecker" }]
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
 }
