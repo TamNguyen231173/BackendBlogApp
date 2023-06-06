@@ -89,4 +89,5 @@ app.listen(port, () => {
   connectDB();
 });
 
-export default app;
+// Export the Express API
+module.exports = app;
