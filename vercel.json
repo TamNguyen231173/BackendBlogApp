@@ -1,3 +1,10 @@
 {
-  "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
-}
+    "version": 2,
+    "name": "animal-app",
+    "builds": [
+       { "src": "./src/app.ts", "use": "@vercel/node" }
+    ],
+    "routes": [
+       { "src": "/(.*)", "dest": "/api" }
+    ]
+ }
