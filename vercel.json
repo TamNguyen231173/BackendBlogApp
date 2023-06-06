@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "/api/(.*)",
+      "src": "./api/index.ts",
       "use": "@now/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/healthChecker"
+      "src": "/(.*)",
+      "dest": "./api/index.ts"
     }
   ]
 }
