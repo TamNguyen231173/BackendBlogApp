@@ -56,7 +56,7 @@ app.use("/common", commonRouter);
 app.use("/api/categories", categoryRouter);
 
 // Testing
-app.get("/healthChecker", (req: Request, res: Response, next: NextFunction) => {
+app.get("/api", (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({
     status: "success",
     message: "Welcome to CodevoWeb😂😂👈👈",
