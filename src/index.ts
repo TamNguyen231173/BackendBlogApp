@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
-import config from "config";
 import cookieParser from "cookie-parser";
 import connectDB from "./utils/connectDB";
 import userRouter from "./routes/user.route";
@@ -41,7 +40,7 @@ if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 // 4. Cors
 app.use(
   cors({
-    origin: config.get<string>("origin"),
+    origin: "http://localhost:8000",
     credentials: true,
   })
 );
