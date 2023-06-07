@@ -55,7 +55,7 @@ app.use("/api/categories", categoryRouter);
 
 // Testing
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).json({
+  res.send(200).json({
     status: "success",
     message: "Welcome to CodevoWeb😂😂👈👈",
   });
