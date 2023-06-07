@@ -48,7 +48,7 @@ app.use(
 // 5. Routes
 // app.use("/api/users", userRouter);
 // app.use("/api/auth", authRouter);
-app.use("", authRouter);
+// app.use("", authRouter);
 // app.use("/api/posts", postRouter);
 // app.use("/common", commonRouter);
 // app.use("/api/categories", categoryRouter);
@@ -83,7 +83,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 app.listen(8000, () => {
   console.log(`Server started on port: 8000`);
   // 👇 call the connectDB function here
-  //connectDB();
+  connectDB();
 });
 
 // Export the Express API
