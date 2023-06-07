@@ -19,14 +19,14 @@ const viewsPath = path.join(__dirname, "./templates/views");
 const partialsPath = path.join(__dirname, "./templates/partials");
 const helpers = path.join(__dirname, "./utils/helpers");
 
-// // Setup static directory to serve
-// app.use(express.static(publicDirectoryPath));
+// Setup static directory to serve
+app.use(express.static(publicDirectoryPath));
 
-// // Setup handlebars engine and views location
-// app.set("view engine", "pug");
-// app.set("views", viewsPath);
+// Setup handlebars engine and views location
+app.set("view engine", "pug");
+app.set("views", viewsPath);
 
-// // Middleware
+// Middleware
 
 // // 1. Body Parser
 // app.use(express.json({ limit: "10kb" }));
