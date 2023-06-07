@@ -26,24 +26,24 @@ app.use(express.static(publicDirectoryPath));
 app.set("view engine", "pug");
 app.set("views", viewsPath);
 
-// // Middleware
+// Middleware
 
-// // 1. Body Parser
-// app.use(express.json({ limit: "10kb" }));
+// 1. Body Parser
+app.use(express.json({ limit: "10kb" }));
 
-// // 2. Cookie Parser
-// app.use(cookieParser());
+// 2. Cookie Parser
+app.use(cookieParser());
 
-// // 3. Logger
-// if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
+// 3. Logger
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
-// // 4. Cors
-// app.use(
-//   cors({
-//     origin: "http://localhost:8000",
-//     credentials: true,
-//   })
-// );
+// 4. Cors
+app.use(
+  cors({
+    origin: "http://localhost:8000",
+    credentials: true,
+  })
+);
 
 // 5. Routes
 app.use("/api/users", userRouter);
