@@ -90,7 +90,7 @@ const port = config.get<number>("port") || 5000;
 app.listen(5000, () => {
   console.log(`Server started on port: 5000`);
   // 👇 call the connectDB function here
-  connectDB();
+  //connectDB();
 });
 
 // Export the Express API
