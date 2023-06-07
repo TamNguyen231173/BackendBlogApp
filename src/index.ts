@@ -19,12 +19,12 @@ const viewsPath = path.join(__dirname, "./templates/views");
 const partialsPath = path.join(__dirname, "./templates/partials");
 const helpers = path.join(__dirname, "./utils/helpers");
 
-// // Setup static directory to serve
-// app.use(express.static(publicDirectoryPath));
+// Setup static directory to serve
+app.use(express.static(publicDirectoryPath));
 
-// // Setup handlebars engine and views location
-// app.set("view engine", "pug");
-// app.set("views", viewsPath);
+// Setup handlebars engine and views location
+app.set("view engine", "pug");
+app.set("views", viewsPath);
 
 // // Middleware
 
@@ -45,13 +45,13 @@ const helpers = path.join(__dirname, "./utils/helpers");
 //   })
 // );
 
-// // 5. Routes
-// app.use("/api/users", userRouter);
-// app.use("/api/auth", authRouter);
-// app.use("", authRouter);
-// app.use("/api/posts", postRouter);
-// app.use("/common", commonRouter);
-// app.use("/api/categories", categoryRouter);
+// 5. Routes
+app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
+app.use("", authRouter);
+app.use("/api/posts", postRouter);
+app.use("/common", commonRouter);
+app.use("/api/categories", categoryRouter);
 
 // Testing
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
