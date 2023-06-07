@@ -1,19 +1,19 @@
-require("dotenv").config();
-// import express, { NextFunction, Request, Response } from "express";
-// import morgan from "morgan";
+require('dotenv').config({path: __dirname + '/.env'})
+import express, { NextFunction, Request, Response } from "express";
+import morgan from "morgan";
 import config from "config";
-// import cors from "cors";
-// import cookieParser from "cookie-parser";
-// import connectDB from "./utils/connectDB";
-// import userRouter from "./routes/user.route";
-// import authRouter from "./routes/auth.route";
-// import postRouter from "./routes/post.route";
-// import commonRouter from "./routes/common.route";
-// import categoryRouter from "./routes/category.route";
-// const path = require("path");
-// const pug = require("pug");
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import connectDB from "./utils/connectDB";
+import userRouter from "./routes/user.route";
+import authRouter from "./routes/auth.route";
+import postRouter from "./routes/post.route";
+import commonRouter from "./routes/common.route";
+import categoryRouter from "./routes/category.route";
+const path = require("path");
+const pug = require("pug");
 
-// const app = express();
+const app = express();
 
 // // Define paths for Express config
 // const publicDirectoryPath = path.join(__dirname, "./public/");
@@ -92,16 +92,12 @@ const port = config.get<number>("port");
 // // Export the Express API
 // module.exports = app;
 
-const express = require("express");
-
-const app = express();
-
 app.get("/", (_req: any, res: { send: (arg0: string) => void }) => {
   res.send("Express on Vercel");
 });
 
-app.listen(port, () => {
-  console.log(`Server started on port: ${port}`);
+app.listen(5000, () => {
+  console.log(`Server started on port: `);
 });
 
 // Export the Express API
