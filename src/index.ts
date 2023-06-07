@@ -1,6 +1,7 @@
+require("dotenv").config({ path: __dirname + "/.env" });
 // import express, { NextFunction, Request, Response } from "express";
 // import morgan from "morgan";
-
+import config from "config";
 // import cors from "cors";
 // import cookieParser from "cookie-parser";
 // import connectDB from "./utils/connectDB";
@@ -98,7 +99,7 @@ app.get("/", (_req: any, res: { send: (arg0: string) => void }) => {
   res.send("Express on Vercel");
 });
 
-app.listen(5000 , () => {
+app.listen(5000, () => {
   console.log("Running on port 5000.");
 });
 
