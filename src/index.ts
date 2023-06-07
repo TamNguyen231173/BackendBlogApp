@@ -86,7 +86,7 @@ app.get("/", (_req: any, res: { send: (arg0: string) => void }) => {
   res.send("Express on Vercel");
 });
 
-const port = config.get<number>("port");
+const port = config.get<number>("port") || 5000;
 app.listen(port, () => {
   console.log(`Server started on port: ${port}`);
   // 👇 call the connectDB function here
