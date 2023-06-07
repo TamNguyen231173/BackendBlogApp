@@ -46,12 +46,12 @@ app.use(
 );
 
 // 5. Routes
-app.use("/api/users", userRouter);
-app.use("/api/auth", authRouter);
-app.use("", authRouter);
-app.use("/api/posts", postRouter);
-app.use("/common", commonRouter);
-app.use("/api/categories", categoryRouter);
+app.get("/api/users", userRouter);
+app.get("/api/auth", authRouter);
+app.get("", authRouter);
+app.get("/api/posts", postRouter);
+app.get("/common", commonRouter);
+app.get("/api/categories", categoryRouter);
 
 // Testing
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
