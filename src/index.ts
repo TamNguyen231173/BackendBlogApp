@@ -61,24 +61,24 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-// // UnKnown Routes
-// app.all("*", (req: Request, res: Response, next: NextFunction) => {
-//   const err = new Error(`Route ${req.originalUrl} not found`) as any;
-//   err.statusCode = 404;
-//   res.render("404Page");
-//   next(err);
-// });
+// UnKnown Routes
+app.all("*", (req: Request, res: Response, next: NextFunction) => {
+  const err = new Error(`Route ${req.originalUrl} not found`) as any;
+  err.statusCode = 404;
+  res.render("404Page");
+  next(err);
+});
 
-// // Global Error Handler
-// app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-//   err.status = err.status || "error";
-//   err.statusCode = err.statusCode || 500;
+// Global Error Handler
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  err.status = err.status || "error";
+  err.statusCode = err.statusCode || 500;
 
-//   res.status(err.statusCode).json({
-//     status: err.status,
-//     message: err.message,
-//   });
-// });
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
+  });
+});
 
 app.listen(8000, () => {
   console.log(`Server started on port: 8000`);
