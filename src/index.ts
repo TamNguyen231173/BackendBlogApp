@@ -1,6 +1,4 @@
-require("dotenv").config({ path: __dirname + "/.env" });
 // import { NextFunction, Request, Response } from "express";
-import config from "config";
 // import morgan from "morgan";
 // import cors from "cors";
 // import cookieParser from "cookie-parser";
