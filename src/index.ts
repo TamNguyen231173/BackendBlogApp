@@ -1,7 +1,5 @@
-require("dotenv").config({ path: __dirname + "/.env" });
 // import { NextFunction, Request, Response } from "express";
 // import morgan from "morgan";
-import config from "config";
 // import cors from "cors";
 // import cookieParser from "cookie-parser";
 // import connectDB from "./utils/connectDB";
@@ -80,7 +78,6 @@ import config from "config";
 //   });
 // });
 
-const port = config.get<number>("port");
 // app.listen(port, () => {
 //   console.log(`Server started on port: ${port}`);
 //   // 👇 call the connectDB function here
