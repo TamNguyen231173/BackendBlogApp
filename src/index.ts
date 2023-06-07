@@ -83,7 +83,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 app.listen(8000, () => {
   console.log(`Server started on port: 8000`);
   // 👇 call the connectDB function here
-  connectDB();
+  // connectDB();
 });
 
 // Export the Express API
