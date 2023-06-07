@@ -12,9 +12,6 @@ import config from "config";
 // import categoryRouter from "./routes/category.route";
 // const path = require("path");
 // const pug = require("pug");
-const express = require("express");
-
-const app = express();
 
 // // Define paths for Express config
 // const publicDirectoryPath = path.join(__dirname, "./public/");
@@ -92,6 +89,9 @@ const port = config.get<number>("port");
 
 // // Export the Express API
 // module.exports = app;
+const express = require("express");
+
+const app = express();
 
 app.get("/", (_req: any, res: { send: (arg0: string) => void }) => {
   res.send("Express on Vercel");
