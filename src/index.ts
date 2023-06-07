@@ -87,8 +87,8 @@ app.get("/", (_req: any, res: { send: (arg0: string) => void }) => {
 });
 
 const port = config.get<number>("port") || 5000;
-app.listen(port, () => {
-  console.log(`Server started on port: ${port}`);
+app.listen(5000, () => {
+  console.log(`Server started on port: 5000`);
   // 👇 call the connectDB function here
   connectDB();
 });
