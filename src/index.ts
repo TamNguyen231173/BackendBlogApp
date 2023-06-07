@@ -1,7 +1,6 @@
-require("dotenv").config();
 // import express, { NextFunction, Request, Response } from "express";
 // import morgan from "morgan";
-import config from "config";
+
 // import cors from "cors";
 // import cookieParser from "cookie-parser";
 // import connectDB from "./utils/connectDB";
@@ -82,7 +81,6 @@ import config from "config";
 //   });
 // });
 
-const port = config.get<number>("port");
 // app.listen(port, () => {
 //   console.log(`Server started on port: ${port}`);
 //   // 👇 call the connectDB function here
@@ -100,7 +98,7 @@ app.get("/", (_req: any, res: { send: (arg0: string) => void }) => {
   res.send("Express on Vercel");
 });
 
-app.listen(5000, () => {
+app.listen(5000 , () => {
   console.log("Running on port 5000.");
 });
 
