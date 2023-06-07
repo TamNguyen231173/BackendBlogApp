@@ -40,18 +40,18 @@ const app = express();
 // // 4. Cors
 // app.use(
 //   cors({
-//     origin: "http://localhost:8000",
+//     origin: "https://backend-news-app-git-main-tamnguyen231173.vercel.app/",
 //     credentials: true,
 //   })
 // );
 
-// 5. Routes
-app.use("/api/users", userRouter);
-app.use("/api/auth", authRouter);
-app.use("", authRouter);
-app.use("/api/posts", postRouter);
-app.use("/common", commonRouter);
-app.use("/api/categories", categoryRouter);
+// // 5. Routes
+// app.use("/api/users", userRouter);
+// app.use("/api/auth", authRouter);
+// app.use("", authRouter);
+// app.use("/api/posts", postRouter);
+// app.use("/common", commonRouter);
+// app.use("/api/categories", categoryRouter);
 
 // Testing
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
