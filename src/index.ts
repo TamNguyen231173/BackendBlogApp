@@ -1,5 +1,5 @@
 require("dotenv").config();
-import express, { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import config from "config";
 import cors from "cors";
@@ -12,6 +12,7 @@ import commonRouter from "./routes/common.route";
 import categoryRouter from "./routes/category.route";
 const path = require("path");
 const pug = require("pug");
+const express = require("express");
 
 const app = express();
 
@@ -86,11 +87,11 @@ app.get("/", (_req: any, res: { send: (arg0: string) => void }) => {
   res.send("Express on Vercel");
 });
 
-const port = config.get<number>("port") || 5000;
-app.listen(5000, () => {
-  console.log(`Server started on port: 5000`);
+const port = config.get<number>("port");
+app.listen(port, () => {
+  console.log(`Server started on port: ${port}`);
   // 👇 call the connectDB function here
-  //connectDB();
+  connectDB();
 });
 
 // Export the Express API
