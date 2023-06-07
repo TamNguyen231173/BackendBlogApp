@@ -120,19 +120,6 @@ export const createReplySchema = object({
   }),
 });
 
-export const editCommentSchema = object({
-  ...paramsReply,
-  body: object({
-    content: string({
-      required_error: "Content is required",
-    }),
-  }),
-});
-
-export const deleteCommentSchema = object({
-  ...paramsReply,
-});
-
 export const getCommentsOfPostSchema = object({
   ...params,
 });
@@ -153,10 +140,8 @@ export type GetPostsByCategoryInput = TypeOf<
   typeof getPostsByCategorySchema
 >["params"];
 export type GetPostsByUserInput = TypeOf<typeof getPostsByUser>["params"];
-export type CreateCommentInput = TypeOf<typeof createCommentSchema>["params"];
-export type CreateReplyInput = TypeOf<typeof createReplySchema>["params"];
+export type CreateCommentInput = TypeOf<typeof createCommentSchema>["body"];
+export type CreateReplyInput = TypeOf<typeof createReplySchema>["body"];
 export type GetCommentsOfPostInput = TypeOf<
   typeof getCommentsOfPostSchema
 >["params"];
-export type EditCommentInput = TypeOf<typeof editCommentSchema>["params"];
-export type DeleteCommentInput = TypeOf<typeof deleteCommentSchema>["params"];

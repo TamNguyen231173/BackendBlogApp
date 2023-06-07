@@ -14,8 +14,6 @@ import {
   createCommentHandler,
   createReplyHandler,
   getCommentsHandler,
-  editCommentHandler,
-  deleteCommentHandler,
 } from "../controllers/post.controller";
 import { deserializeUser } from "../middleware/deserializeUser";
 import { requireUser } from "../middleware/requireUser";
@@ -28,8 +26,6 @@ import {
   createCommentSchema,
   createReplySchema,
   getCommentsOfPostSchema,
-  editCommentSchema,
-  deleteCommentSchema,
 } from "../schema/post.schema";
 import {
   resizePostImage,
@@ -83,8 +79,6 @@ router
 
 router
   .route("/replies/:postId/:commentId/:page")
-  .post(validate(createReplySchema), createReplyHandler)
-  .patch(validate(editCommentSchema), editCommentHandler)
-  .delete(validate(deleteCommentSchema), deleteCommentHandler);
+  .post(validate(createReplySchema), createReplyHandler);
 
 export default router;
